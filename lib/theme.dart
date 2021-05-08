@@ -20,22 +20,35 @@ ThemeData themeData() {
   return base.copyWith(
     primaryColor: kSwatchPrimary,
     accentColor: kSwatchWhite,
+    appBarTheme: AppBarTheme(
+      backwardsCompatibility: false,
+      foregroundColor: kSwatchPrimary,
+      backgroundColor: kSwatchSecondary,
+    ),
     backgroundColor: kSwatchWhite,
+    floatingActionButtonTheme: FloatingActionButtonThemeData(
+      backgroundColor: kSwatchPrimary,
+      foregroundColor: kSwatchWhite,
+    ),
     scaffoldBackgroundColor: kSwatchWhite,
     textTheme: textTheme,
   );
 }
 
 TextTheme _textTheme(ThemeData base) {
-  return base.textTheme
-      .copyWith(
-        headline4: TextStyle(
-          color: kSwatchPrimary,
-          fontFamily: kFontTitle,
-        ),
-      )
-      .apply(
-        bodyColor: kSwatchPrimary,
-        displayColor: kSwatchPrimary,
-      );
+  //DON'T TOUCH subtitle1 otherwise it would make
+  //the popup-menu text grey
+  return base.textTheme.copyWith(
+    headline4: TextStyle(
+      color: kSwatchPrimary,
+      fontFamily: kFontTitle,
+    ),
+    headline6: TextStyle(
+      color: kSwatchPrimary,
+      fontWeight: FontWeight.normal,
+    ),
+    bodyText2: TextStyle(
+      color: kSwatchGreyDark,
+    ),
+  );
 }

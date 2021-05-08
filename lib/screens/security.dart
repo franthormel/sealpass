@@ -2,12 +2,9 @@ import 'package:flutter/material.dart';
 
 import '../manager/padding.dart';
 import '../manager/size.dart';
+import 'home.dart';
 
 class SecurityScreen extends StatelessWidget {
-  static const logo = "assets/images/logo.png";
-  static const title = "Sealpass";
-  static const subtitle = "Unlock Using Your Fingerprint";
-
   const SecurityScreen({Key key}) : super(key: key);
 
   @override
@@ -35,16 +32,16 @@ class SecurityScreen extends StatelessWidget {
             Column(
               children: <Widget>[
                 Image.asset(
-                  logo,
+                  "assets/images/logo.png",
                   width: sizeLogo.width,
                   height: sizeLogo.height,
                 ),
                 Text(
-                  title,
+                  "Sealpass",
                   style: styleTitle,
                 ),
                 Text(
-                  subtitle,
+                  "Unlock Using Your Fingerprint",
                   style: styleSubtitle,
                 ),
               ],
@@ -52,7 +49,15 @@ class SecurityScreen extends StatelessWidget {
             IconButton(
               icon: Icon(Icons.fingerprint),
               iconSize: sizeIcon,
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Home(),
+                  ),
+                );
+              },
+              tooltip: "",
             ),
           ],
         ),

@@ -7,6 +7,9 @@ class PaddingManager {
   static const _kHomeVertical = .02;
   static const _kHomeHorizontal = .01;
 
+  static const _kCredentialAddVertical = .04;
+  static const _kCredentialAddHorizontal = .05;
+
   ///Returns padding for [Security] screen
   static EdgeInsets security(Size size) {
     return EdgeInsets.symmetric(
@@ -18,10 +21,22 @@ class PaddingManager {
   ///Returns padding for [Home] screen
   static EdgeInsets home(Size size) {
     final horizontal = size.width * _kHomeHorizontal;
+
     return EdgeInsets.only(
       top: size.height * _kHomeVertical,
       left: horizontal,
       right: horizontal,
+    );
+  }
+
+  ///Returns padding for [CredentialAdd] screen
+  static EdgeInsets credentialAdd(Size size) {
+    final horizontal = size.width * _kCredentialAddHorizontal;
+
+    return EdgeInsets.only(
+      top: size.height * _kCredentialAddVertical,
+      right: horizontal,
+      left: horizontal,
     );
   }
 }

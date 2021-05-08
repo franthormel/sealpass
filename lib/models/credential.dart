@@ -1,5 +1,5 @@
 class Credential {
-  final String company;
+  final String name;
   final String address;
 
   final String username;
@@ -8,10 +8,17 @@ class Credential {
   final DateTime time;
 
   const Credential({
-    this.company,
+    this.name,
     this.address,
     this.username,
     this.password,
     this.time,
   });
+
+  Credential.now({
+    this.name,
+    this.address,
+    this.username,
+    this.password,
+  }) : time = DateTime.now();
 }

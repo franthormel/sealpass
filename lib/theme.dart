@@ -31,6 +31,10 @@ ThemeData themeData() {
       foregroundColor: kSwatchWhite,
     ),
     scaffoldBackgroundColor: kSwatchWhite,
+    snackBarTheme: SnackBarThemeData(
+      behavior: SnackBarBehavior.floating,
+      actionTextColor: kSwatchWhite,
+    ),
     textTheme: textTheme,
   );
 }

@@ -1,4 +1,4 @@
-enum SearchType {
+enum SortType {
   Alphabetical,
   Chronological,
 }

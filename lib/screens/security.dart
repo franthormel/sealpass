@@ -9,57 +9,61 @@ class SecurityScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
     final theme = Theme.of(context);
+    final size = MediaQuery.of(context).size;
 
-    final sizeIcon = SizeManager.iconFinger(size);
     final sizeLogo = SizeManager.logo(size);
+    final sizeIcon = SizeManager.iconFinger(size);
+    final padding = PaddingManager.security(size);
 
     final styleTitle = theme.textTheme.headline4;
     final styleSubtitle = theme.textTheme.subtitle1;
 
-    final padding = PaddingManager.security(size);
-
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Padding(
         padding: padding,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Divider(
-              color: Colors.transparent,
-            ),
-            Column(
-              children: <Widget>[
-                Image.asset(
-                  "assets/images/logo.png",
-                  width: sizeLogo.width,
-                  height: sizeLogo.height,
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Flexible(
+                child: FractionallySizedBox(
+                  heightFactor: .1,
                 ),
-                Text(
-                  "Sealpass",
-                  style: styleTitle,
-                ),
-                Text(
-                  "Unlock Using Your Fingerprint",
-                  style: styleSubtitle,
-                ),
-              ],
-            ),
-            IconButton(
-              icon: Icon(Icons.fingerprint),
-              iconSize: sizeIcon,
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => Home(),
+              ),
+              Column(
+                children: <Widget>[
+                  Image.asset(
+                    "assets/images/logo.png",
+                    width: sizeLogo.width,
+                    height: sizeLogo.height,
                   ),
-                );
-              },
-              tooltip: "",
-            ),
-          ],
+                  Text(
+                    "Sealpass",
+                    style: styleTitle,
+                  ),
+                  Text(
+                    "Unlock Using Your Fingerprint",
+                    style: styleSubtitle,
+                  ),
+                ],
+              ),
+              IconButton(
+                icon: Icon(Icons.fingerprint),
+                iconSize: sizeIcon,
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => Home(),
+                    ),
+                  );
+                },
+                tooltip: "Unlock",
+              ),
+            ],
+          ),
         ),
       ),
     );

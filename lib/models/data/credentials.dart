@@ -1,6 +1,6 @@
 import '../credential.dart';
 
-List<Credential> sourceCredentials = [
+final List<Credential> sourceCredentials = [
   Credential(
     name: "Liluntia",
     address: "https://liluntia.com",

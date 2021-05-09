@@ -5,10 +5,12 @@ import '../models/credential.dart';
 import '../models/data/credentials.dart';
 import '../models/enum/enums.dart';
 import '../screens/credential_add.dart';
+import 'credential_view.dart';
 import 'search.dart';
 
 class Home extends StatefulWidget {
-  //Usually you get this from a server so we'll use this models.data as our example
+  //Usually you get this from a server so we'll use this as our example
+  List<Credential> credentialsSource = sourceCredentials;
 
   Home({Key key}) : super(key: key);
 
@@ -17,10 +19,21 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  final credentials = sourceCredentials;
   final keyRefresh = GlobalKey<RefreshIndicatorState>();
 
+  List<Credential> credentials;
   SortType sorting;
+
+  @override
+  void initState() {
+    super.initState();
+    resetSource();
+  }
+
+  ///Sets [List<Credential>] from original source
+  void resetSource() {
+    credentials = widget.credentialsSource;
+  }
 
   ///Sort [List<Credential>] depending on [SortType]
   void sortCredentials() {
@@ -40,12 +53,36 @@ class _HomeState extends State<Home> {
       ),
     );
 
+    //This is where you usually add the new credential to a database or server
+    //1. We add it to the 'source'
+    //2. We set our local copy from the source
+    //3. Sort our local copy if possible
+    //4. Display a SnackBar
+    //5. Refresh ListView
+
+    //TODO: Transition to Provider state management
     if (credential != null) {
       credentials.add(credential);
+
+      resetSource();
 
       if (sorting != null) {
         sortCredentials();
       }
+
+      final messenger = ScaffoldMessenger.of(context);
+
+      messenger.showSnackBar(
+        SnackBar(
+          content: Text("Account created!"),
+          action: SnackBarAction(
+            label: 'OK',
+            onPressed: () {
+              messenger.hideCurrentSnackBar();
+            },
+          ),
+        ),
+      );
 
       keyRefresh.currentState.show();
     }
@@ -70,12 +107,12 @@ class _HomeState extends State<Home> {
           tooltip: "Menu",
         ),
         title: GestureDetector(
-          child: Text("Search for account"),
+          child: Text("Search for your account"),
           onTap: () {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => Search(),
+                builder: (context) => Search(widget.credentialsSource),
               ),
             );
           },
@@ -116,9 +153,9 @@ class _HomeState extends State<Home> {
         ],
       ),
       //TODO: Add FAB animation to add screen
-      //TODO: Add method for add screen
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
+        tooltip: "Add account",
         onPressed: () {
           addCredential(context);
         },
@@ -130,35 +167,28 @@ class _HomeState extends State<Home> {
           key: keyRefresh,
           onRefresh: () {
             setState(() {});
-            return Future.delayed(const Duration(seconds: 1)).then((value) {
-              final messenger = ScaffoldMessenger.of(context);
-
-              messenger.showSnackBar(
-                (SnackBar(
-                  content: Text("Account created!"),
-                  action: SnackBarAction(
-                    label: 'OK',
-                    onPressed: () {
-                      messenger.hideCurrentSnackBar();
-                    },
-                  ),
-                )),
-              );
-            });
+            return Future.delayed(const Duration(seconds: 1))
+                .then((value) => null);
           },
           child: ListView.builder(
             itemBuilder: (context, index) {
-              final c = credentials[index];
+              final account = credentials[index];
 
-              //TODO: Add method for viewing credential details
               return ListTile(
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => CredentialView(account),
+                    ),
+                  );
+                },
                 title: Text(
-                  c.name,
+                  account.name,
                   style: styleTitle,
                 ),
                 subtitle: Text(
-                  c.username,
+                  account.username,
                   style: styleSubtitle,
                 ),
               );

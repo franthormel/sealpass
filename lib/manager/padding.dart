@@ -18,10 +18,9 @@ class PaddingManager {
     );
   }
 
-  ///Returns padding for [Home] screen
+  ///Returns padding for [Home] and [Search] screen
   static EdgeInsets home(Size size) {
     final horizontal = size.width * _kHomeHorizontal;
-
     return EdgeInsets.only(
       top: size.height * _kHomeVertical,
       left: horizontal,
@@ -29,10 +28,9 @@ class PaddingManager {
     );
   }
 
-  ///Returns padding for [CredentialAdd] screen
-  static EdgeInsets credentialAdd(Size size) {
+  ///Returns padding for [CredentialAdd] and [CredentialView] screen
+  static EdgeInsets credential(Size size) {
     final horizontal = size.width * _kCredentialAddHorizontal;
-
     return EdgeInsets.only(
       top: size.height * _kCredentialAddVertical,
       right: horizontal,

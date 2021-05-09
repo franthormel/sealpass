@@ -17,55 +17,46 @@ class _CredentialAddState extends State<CredentialAdd> {
   final textUsername = TextEditingController();
   final textPassword = TextEditingController();
 
-  bool visiblePassword = true;
-
-  void sampleInput() {
-    textName.text = "Google";
-    textAddress.text = "accounts.google.com";
-    textUsername.text = "sample@gmail.com";
-    textPassword.text = "P@s\$w0rd";
-  }
+  bool maskPassword = true;
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-
-    final padding = PaddingManager.credentialAdd(size);
+    final padding = PaddingManager.credential(size);
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: Text("Add account"),
+        title: Text("Add an account"),
         actions: <Widget>[
           //FOR SAMPLING ONLY!!!
           IconButton(
-            icon: Icon(Icons.article_outlined),
+            icon: Icon(Icons.description_outlined),
             tooltip: "Sample",
             onPressed: () {
-              sampleInput();
+              textName.text = "Google";
+              textAddress.text = "accounts.google.com";
+              textUsername.text = "sample@gmail.com";
+              textPassword.text = "P@s\$w0rd";
             },
           ),
           IconButton(
             icon: Icon(Icons.check),
+            tooltip: "Add",
             onPressed: () {
               //Validate form
               if (keyForm.currentState.validate()) {
-                final name = textName.text;
-                final address = textAddress.text;
-                final username = textUsername.text;
-                final password = textPassword.text;
-
                 final credential = Credential.now(
-                  name: name,
-                  address: address,
-                  username: username,
-                  password: password,
+                  name: textName.text,
+                  address: textAddress.text,
+                  username: textUsername.text,
+                  password: textPassword.text,
                 );
 
+                //TODO: Transition to Provider state management
                 Navigator.pop<Credential>(context, credential);
               }
             },
-            tooltip: "Add",
           ),
         ],
       ),
@@ -161,7 +152,7 @@ class _CredentialAddState extends State<CredentialAdd> {
                     children: <Widget>[
                       TextFormField(
                         controller: textPassword,
-                        obscureText: visiblePassword,
+                        obscureText: maskPassword,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return "Password is required";
@@ -175,12 +166,14 @@ class _CredentialAddState extends State<CredentialAdd> {
                       Align(
                         alignment: Alignment.centerRight,
                         child: IconButton(
-                          icon: visiblePassword
+                          tooltip:
+                              maskPassword ? "Show password" : "Hide password",
+                          icon: maskPassword
                               ? Icon(Icons.visibility)
                               : Icon(Icons.visibility_off),
                           onPressed: () {
                             setState(() {
-                              visiblePassword = !visiblePassword;
+                              maskPassword = !maskPassword;
                             });
                           },
                         ),

@@ -7,7 +7,6 @@ const kSwatchWhite = Colors.white;
 const kSwatchGreyDark = Color(0xFF7B7B7B);
 
 const kSwatchTextLink = Color(0xFF1A1B41);
-
 const kSwatchSuccess = Color(0xFF50C468);
 const kSwatchError = Color(0xFFF71641);
 
@@ -15,7 +14,6 @@ const kFontTitle = "RobotoMono";
 
 ThemeData themeData() {
   final base = ThemeData.light();
-  final textTheme = _textTheme(base);
 
   return base.copyWith(
     primaryColor: kSwatchPrimary,
@@ -26,6 +24,7 @@ ThemeData themeData() {
       backgroundColor: kSwatchSecondary,
     ),
     backgroundColor: kSwatchWhite,
+    errorColor: kSwatchError,
     floatingActionButtonTheme: FloatingActionButtonThemeData(
       backgroundColor: kSwatchPrimary,
       foregroundColor: kSwatchWhite,
@@ -33,15 +32,16 @@ ThemeData themeData() {
     scaffoldBackgroundColor: kSwatchWhite,
     snackBarTheme: SnackBarThemeData(
       behavior: SnackBarBehavior.floating,
-      actionTextColor: kSwatchWhite,
+      actionTextColor: kSwatchSuccess,
     ),
-    textTheme: textTheme,
+    textTheme: _textTheme(base),
   );
 }
 
 TextTheme _textTheme(ThemeData base) {
-  //DON'T TOUCH subtitle1 otherwise it would make
-  //the popup-menu text grey
+  //Rules
+  //1. Never touch subtitle1
+  //2. We're using bodyText1 as 'link' text
   return base.textTheme.copyWith(
     headline4: TextStyle(
       color: kSwatchPrimary,
@@ -50,6 +50,10 @@ TextTheme _textTheme(ThemeData base) {
     headline6: TextStyle(
       color: kSwatchPrimary,
       fontWeight: FontWeight.normal,
+    ),
+    bodyText1: TextStyle(
+      fontSize: base.textTheme.bodyText2.fontSize,
+      color: kSwatchTextLink,
     ),
     bodyText2: TextStyle(
       color: kSwatchGreyDark,

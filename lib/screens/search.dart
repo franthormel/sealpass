@@ -5,7 +5,6 @@ import '../models/credential.dart';
 import 'credential_view.dart';
 
 class Search extends StatefulWidget {
-  //Original
   final List<Credential> credentialSource;
 
   const Search(this.credentialSource, {Key key}) : super(key: key);
@@ -15,11 +14,9 @@ class Search extends StatefulWidget {
 }
 
 class _SearchState extends State<Search> {
-  //Use this for building or rebuilding, just make sure to set it back again from
-  //the source if the [TextField] is empty or reset
-  List<Credential> credentialSearch;
-
   final textSearch = TextEditingController();
+
+  List<Credential> credentialSearch;
 
   @override
   void initState() {
@@ -27,10 +24,12 @@ class _SearchState extends State<Search> {
     resetSource();
   }
 
+  ///Sets [List<Credential>] from its original state
   void resetSource() {
     credentialSearch = widget.credentialSource;
   }
 
+  ///Checks if the [List<Credential>] contains the text
   void updateList(String text) {
     setState(() {
       resetSource();
@@ -57,62 +56,87 @@ class _SearchState extends State<Search> {
     return Scaffold(
       appBar: AppBar(
         //TODO: Put limit to max characters
-        title: TextField(
-          autofocus: true,
-          controller: textSearch,
-          onChanged: (text) {
-            updateList(text);
-          },
-          decoration: InputDecoration(
-            labelText: "Search for your account",
-            hintText: "Name or email",
-            border: InputBorder.none,
+        title: Semantics(
+          currentValueLength: textSearch.text.length,
+          focusable: true,
+          hint: "Tap to search",
+          label: "Search field",
+          multiline: false,
+          textField: true,
+          child: TextField(
+            autofocus: true,
+            controller: textSearch,
+            onChanged: (text) {
+              updateList(text);
+            },
+            decoration: InputDecoration(
+              border: InputBorder.none,
+              hintText: "Name or email",
+              labelText: "Search for your account",
+            ),
           ),
         ),
         actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.delete_outline),
-            tooltip: "Clear",
-            onPressed: textSearch.text.isNotEmpty
-                ? () {
-                    textSearch.clear();
-                    updateList(textSearch.text);
-                  }
-                : null,
+          Semantics(
+            button: true,
+            enabled: textSearch.text.isNotEmpty,
+            hint: "Tap to clear search field",
+            label: "Clear search field button",
+            child: IconButton(
+              icon: Icon(Icons.delete_outline),
+              tooltip: "Clear",
+              onPressed: textSearch.text.isNotEmpty
+                  ? () {
+                      setState(() {
+                        textSearch.clear();
+                        resetSource();
+                      });
+                    }
+                  : null,
+            ),
           ),
         ],
       ),
       body: Padding(
         padding: padding,
+        //TODO: Instead of showing text indicating empty state make it more lively by using an image or animation
         child: count == 0
             ? Align(
                 alignment: Alignment.topCenter,
                 child: Text("No accounts found!"),
               )
-            : ListView.builder(
-                itemCount: count,
-                itemBuilder: (context, index) {
-                  final account = credentialSearch[index];
+            : Semantics(
+                hint: "Scroll up/down to view more",
+                label: "List of your accounts",
+                child: ListView.builder(
+                  itemCount: count,
+                  itemBuilder: (context, index) {
+                    final account = credentialSearch[index];
 
-                  return ListTile(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => CredentialView(account),
+                    return Semantics(
+                      hint: "Tap to view details",
+                      label: "Account details",
+                      child: ListTile(
+                        title: Text(
+                          account.name,
+                          style: styleTitle,
                         ),
-                      );
-                    },
-                    title: Text(
-                      account.name,
-                      style: styleTitle,
-                    ),
-                    subtitle: Text(
-                      account.username,
-                      style: styleSubtitle,
-                    ),
-                  );
-                },
+                        subtitle: Text(
+                          account.username,
+                          style: styleSubtitle,
+                        ),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => CredentialView(account),
+                            ),
+                          );
+                        },
+                      ),
+                    );
+                  },
+                ),
               ),
       ),
     );

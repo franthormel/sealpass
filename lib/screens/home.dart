@@ -30,7 +30,7 @@ class _HomeState extends State<Home> {
     resetSource();
   }
 
-  ///Sets [List<Credential>] from original source
+  ///Sets [List<Credential>] from its original state
   void resetSource() {
     credentials = widget.credentialsSource;
   }
@@ -55,11 +55,10 @@ class _HomeState extends State<Home> {
 
     //This is where you usually add the new credential to a database or server
     //1. We add it to the 'source'
-    //2. We set our local copy from the source
-    //3. Sort our local copy if possible
+    //2. We get a copy of the source
+    //3. Sort our copy if possible
     //4. Display a SnackBar
     //5. Refresh ListView
-
     //TODO: Transition to Provider state management
     if (credential != null) {
       credentials.add(credential);
@@ -98,57 +97,73 @@ class _HomeState extends State<Home> {
     final styleTitle = theme.textTheme.headline6;
     final styleSubtitle = theme.textTheme.bodyText2;
 
+    final count = credentials.length;
+
     return Scaffold(
       appBar: AppBar(
         //TODO: Transform this into a drawer
-        leading: IconButton(
-          icon: Icon(Icons.menu),
-          onPressed: () {},
-          tooltip: "Menu",
+        leading: Semantics(
+          button: true,
+          hint: "Display menu",
+          label: "Menu button",
+          child: IconButton(
+            icon: Icon(Icons.menu),
+            tooltip: "Menu",
+            onPressed: () {},
+          ),
         ),
-        title: GestureDetector(
-          child: Text("Search for your account"),
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => Search(widget.credentialsSource),
-              ),
-            );
-          },
+        title: Semantics(
+          hint: "Tap to search for an account",
+          label: "Search area",
+          child: GestureDetector(
+            child: Text("Search for your account"),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => Search(widget.credentialsSource),
+                ),
+              );
+            },
+          ),
         ),
         actions: <Widget>[
-          PopupMenuButton<SortType>(
-            icon: Icon(Icons.arrow_drop_down),
-            onSelected: (value) {
-              sorting = value;
+          Semantics(
+            button: true,
+            hint: "Show sort options",
+            label: "Sort option",
+            child: PopupMenuButton<SortType>(
+              icon: Icon(Icons.arrow_drop_down),
+              onSelected: (value) {
+                sorting = value;
 
-              setState(() {
-                sortCredentials();
-              });
-            },
-            itemBuilder: (context) => <PopupMenuEntry<SortType>>[
-              PopupMenuItem<SortType>(
-                value: SortType.Alphabetical,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Icon(Icons.sort_by_alpha),
-                    Text("Alphabetically"),
-                  ],
+                setState(() {
+                  sortCredentials();
+                });
+              },
+              itemBuilder: (context) => <PopupMenuEntry<SortType>>[
+                PopupMenuItem<SortType>(
+                  value: SortType.Alphabetical,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Icon(Icons.sort_by_alpha),
+                      Text("Alphabetically"),
+                    ],
+                  ),
                 ),
-              ),
-              PopupMenuItem<SortType>(
-                value: SortType.Chronological,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Icon(Icons.schedule),
-                    Text("Recently Used"),
-                  ],
+                PopupMenuItem<SortType>(
+                  value: SortType.Chronological,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Icon(Icons.schedule),
+                      Text("Recently Used"),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ],
       ),
@@ -170,30 +185,45 @@ class _HomeState extends State<Home> {
             return Future.delayed(const Duration(seconds: 1))
                 .then((value) => null);
           },
-          child: ListView.builder(
-            itemBuilder: (context, index) {
-              final account = credentials[index];
+          //TODO: Instead of showing text indicating empty state make it more lively by using an image or animation
+          child: count == 0
+              ? Align(
+                  alignment: Alignment.topCenter,
+                  child: Text("No accounts found!"),
+                )
+              : Semantics(
+                  hint: "Scroll up/down to view more",
+                  label: "List of your accounts",
+                  child: ListView.builder(
+                    itemCount: count,
+                    itemBuilder: (context, index) {
+                      final account = credentials[index];
 
-              return ListTile(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => CredentialView(account),
-                    ),
-                  );
-                },
-                title: Text(
-                  account.name,
-                  style: styleTitle,
+                      return Semantics(
+                        hint: "Tap to view details",
+                        label: "Account details",
+                        child: ListTile(
+                          title: Text(
+                            account.name,
+                            style: styleTitle,
+                          ),
+                          subtitle: Text(
+                            account.username,
+                            style: styleSubtitle,
+                          ),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => CredentialView(account),
+                              ),
+                            );
+                          },
+                        ),
+                      );
+                    },
+                  ),
                 ),
-                subtitle: Text(
-                  account.username,
-                  style: styleSubtitle,
-                ),
-              );
-            },
-          ),
         ),
       ),
     );

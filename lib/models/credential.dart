@@ -29,7 +29,7 @@ class Credential {
 
   ///Returns [true] if either [name] or [username] property contains
   ///
-  /// the parameter [String]
+  /// the [String] parameter
   bool searchContains(String text) {
     //Make sure to normalize all strings involved by either
     //using toLowerCase() or toUpperCase()
@@ -42,10 +42,10 @@ class Credential {
   ///
   /// Example:
   ///
-  ///* January 1, 2001
-  ///* February 2, 2002
-  ///* March 3, 2003
+  ///* January 1, 2001 01:10
+  ///* February 2, 2002 02:20
+  ///* March 3, 2003 03:30
   String timeFormat() {
-    return DateFormat.yMMMMd().format(time);
+    return DateFormat.yMMMMd().add_Hm().format(time);
   }
 }

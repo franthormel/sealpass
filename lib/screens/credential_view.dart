@@ -44,12 +44,16 @@ class _CredentialViewState extends State<CredentialView> {
       appBar: AppBar(
         title: Text("View information"),
         actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.more_vert),
-            tooltip: "More options",
-            //TODO: Show popupmenu edit and delete
-            onPressed: () {
-            },
+          Semantics(
+            button: true,
+            hint: "Tap to view options",
+            label: "Options",
+            child: IconButton(
+              icon: Icon(Icons.more_vert),
+              tooltip: "More options",
+              //TODO: Show popupmenu edit and delete
+              onPressed: () {},
+            ),
           ),
         ],
       ),
@@ -58,17 +62,20 @@ class _CredentialViewState extends State<CredentialView> {
         child: Column(
           children: <Widget>[
             //Name
-            Column(
-              children: <Widget>[
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text("Name"),
-                ),
-                TextField(
-                  controller: textName,
-                  enabled: false,
-                ),
-              ],
+            Semantics(
+              readOnly: true,
+              child: Column(
+                children: <Widget>[
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text("Name"),
+                  ),
+                  TextField(
+                    controller: textName,
+                    enabled: false,
+                  ),
+                ],
+              ),
             ),
             Flexible(
               child: FractionallySizedBox(
@@ -76,31 +83,38 @@ class _CredentialViewState extends State<CredentialView> {
               ),
             ),
             //Address
-            Column(
-              children: <Widget>[
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text("Address"),
-                ),
-                Stack(
-                  children: <Widget>[
-                    TextField(
-                      controller: textAddress,
-                      enabled: false,
-                    ),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: IconButton(
-                        tooltip: "Open",
-                        icon: Icon(Icons.open_in_new),
-                        onPressed: () {
-                          //TODO: Launch this address to browser
-                        },
+            Semantics(
+              readOnly: true,
+              child: Column(
+                children: <Widget>[
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text("Address"),
+                  ),
+                  Stack(
+                    children: <Widget>[
+                      TextField(
+                        controller: textAddress,
+                        enabled: false,
                       ),
-                    ),
-                  ],
-                ),
-              ],
+                      Semantics(
+                        button: true,
+                        hint: "Tap to view",
+                        label: "View address button",
+                        link: true,
+                        child: Align(
+                          alignment: Alignment.centerRight,
+                          child: IconButton(
+                            tooltip: "Open",
+                            icon: Icon(Icons.open_in_new),
+                            onPressed: () {},
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
             Flexible(
               child: FractionallySizedBox(
@@ -108,47 +122,56 @@ class _CredentialViewState extends State<CredentialView> {
               ),
             ),
             //Username
-            Column(
-              children: <Widget>[
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text("Username"),
-                ),
-                Stack(
-                  children: <Widget>[
-                    TextField(
-                      controller: textUsername,
-                      enabled: false,
-                    ),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: IconButton(
-                        tooltip: "Copy username",
-                        icon: Icon(Icons.copy),
-                        onPressed: () {
-                          Clipboard.setData(ClipboardData(
-                            text: textUsername.text,
-                          ));
-
-                          final messenger = ScaffoldMessenger.of(context);
-
-                          messenger.showSnackBar(
-                            SnackBar(
-                              content: Text("Copied username to clipboard!"),
-                              action: SnackBarAction(
-                                label: "DISMISS",
-                                onPressed: () {
-                                  messenger.hideCurrentSnackBar();
-                                },
-                              ),
-                            ),
-                          );
-                        },
+            Semantics(
+              readOnly: true,
+              child: Column(
+                children: <Widget>[
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text("Username"),
+                  ),
+                  Stack(
+                    children: <Widget>[
+                      TextField(
+                        controller: textUsername,
+                        enabled: false,
                       ),
-                    ),
-                  ],
-                ),
-              ],
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: Semantics(
+                          button: true,
+                          hint: "Tap to copy username",
+                          label: "Copy username button",
+                          child: IconButton(
+                            icon: Icon(Icons.copy),
+                            tooltip: "Copy username",
+                            onPressed: () {
+                              Clipboard.setData(ClipboardData(
+                                text: textUsername.text,
+                              ));
+
+                              final messenger = ScaffoldMessenger.of(context);
+
+                              messenger.showSnackBar(
+                                SnackBar(
+                                  content:
+                                      Text("Copied username to clipboard!"),
+                                  action: SnackBarAction(
+                                    label: "DISMISS",
+                                    onPressed: () {
+                                      messenger.hideCurrentSnackBar();
+                                    },
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
             Flexible(
               child: FractionallySizedBox(
@@ -156,62 +179,82 @@ class _CredentialViewState extends State<CredentialView> {
               ),
             ),
             //Password
-            Column(
-              children: <Widget>[
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text("Password"),
-                ),
-                Stack(
-                  children: <Widget>[
-                    TextField(
-                      controller: textPassword,
-                      obscureText: maskPassword,
-                      enabled: false,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        IconButton(
-                          tooltip:
-                              maskPassword ? "Show password" : "Hide password",
-                          icon: maskPassword
-                              ? Icon(Icons.visibility)
-                              : Icon(Icons.visibility_off),
-                          onPressed: () {
-                            setState(() {
-                              maskPassword = !maskPassword;
-                            });
-                          },
+            Semantics(
+              readOnly: true,
+              child: Column(
+                children: <Widget>[
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text("Password"),
+                  ),
+                  Stack(
+                    children: <Widget>[
+                      Semantics(
+                        obscured: maskPassword,
+                        child: TextField(
+                          controller: textPassword,
+                          obscureText: maskPassword,
+                          enabled: false,
                         ),
-                        IconButton(
-                          tooltip: "Copy password",
-                          icon: Icon(Icons.copy),
-                          onPressed: () {
-                            Clipboard.setData(ClipboardData(
-                              text: textPassword.text,
-                            ));
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Semantics(
+                            button: true,
+                            hint: maskPassword
+                                ? "Tap to show password"
+                                : "Tap to hide password",
+                            label: "Obscure password button",
+                            child: IconButton(
+                              icon: maskPassword
+                                  ? Icon(Icons.visibility)
+                                  : Icon(Icons.visibility_off),
+                              tooltip: maskPassword
+                                  ? "Show password"
+                                  : "Hide password",
+                              onPressed: () {
+                                setState(() {
+                                  maskPassword = !maskPassword;
+                                });
+                              },
+                            ),
+                          ),
+                          Semantics(
+                            button: true,
+                            hint: "Tap to copy password",
+                            label: "Copy password button",
+                            child: IconButton(
+                              tooltip: "Copy password",
+                              icon: Icon(Icons.copy),
+                              onPressed: () {
+                                Clipboard.setData(ClipboardData(
+                                  text: textPassword.text,
+                                ));
 
-                            final messenger = ScaffoldMessenger.of(context);
+                                final messenger = ScaffoldMessenger.of(context);
 
-                            messenger.showSnackBar(
-                              SnackBar(
-                                content: Text("Copied password to clipboard!"),
-                                action: SnackBarAction(
-                                  label: "DISMISS",
-                                  onPressed: () {
-                                    messenger.hideCurrentSnackBar();
-                                  },
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ],
+                                messenger.showSnackBar(
+                                  SnackBar(
+                                    content:
+                                        Text("Copied password to clipboard!"),
+                                    action: SnackBarAction(
+                                      label: "DISMISS",
+                                      onPressed: () {
+                                        messenger.hideCurrentSnackBar();
+                                      },
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
             Flexible(
               child: FractionallySizedBox(
@@ -219,17 +262,20 @@ class _CredentialViewState extends State<CredentialView> {
               ),
             ),
             //Timestamp
-            Column(
-              children: <Widget>[
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text("Timestamp"),
-                ),
-                TextFormField(
-                  controller: textTime,
-                  enabled: false,
-                ),
-              ],
+            Semantics(
+              readOnly: true,
+              child: Column(
+                children: <Widget>[
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text("Timestamp"),
+                  ),
+                  TextField(
+                    controller: textTime,
+                    enabled: false,
+                  ),
+                ],
+              ),
             ),
           ],
         ),

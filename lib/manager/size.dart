@@ -14,7 +14,7 @@ class SizeManager {
     );
   }
 
-  ///Returns the width for the fingerprint icon
+  ///Returns the [double] value for the fingerprint icon's width and height
   static double iconFinger(Size size) {
     return size.height * _kIconFinger;
   }

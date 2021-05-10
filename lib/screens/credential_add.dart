@@ -30,39 +30,49 @@ class _CredentialAddState extends State<CredentialAdd> {
         title: Text("Add an account"),
         actions: <Widget>[
           //FOR SAMPLING ONLY!!!
-          IconButton(
-            icon: Icon(Icons.description_outlined),
-            tooltip: "Sample",
-            onPressed: () {
-              textName.text = "Google";
-              textAddress.text = "accounts.google.com";
-              textUsername.text = "sample@gmail.com";
-              textPassword.text = "P@s\$w0rd";
-            },
+          Semantics(
+            button: true,
+            hint: "Tap to fill with sample",
+            label: "Sample button",
+            child: IconButton(
+              icon: Icon(Icons.description_outlined),
+              tooltip: "Sample",
+              onPressed: () {
+                textName.text = "Google";
+                textAddress.text = "accounts.google.com";
+                textUsername.text = "sample@gmail.com";
+                textPassword.text = "P@s\$w0rd";
+              },
+            ),
           ),
-          IconButton(
-            icon: Icon(Icons.check),
-            tooltip: "Add",
-            onPressed: () {
-              //Validate form
-              if (keyForm.currentState.validate()) {
-                final credential = Credential.now(
-                  name: textName.text,
-                  address: textAddress.text,
-                  username: textUsername.text,
-                  password: textPassword.text,
-                );
+          Semantics(
+            button: true,
+            hint: "Tap to add account",
+            label: "Add account button",
+            child: IconButton(
+              icon: Icon(Icons.check),
+              tooltip: "Add",
+              onPressed: () {
+                //Validate form
+                if (keyForm.currentState.validate()) {
+                  final credential = Credential.now(
+                    name: textName.text,
+                    address: textAddress.text,
+                    username: textUsername.text,
+                    password: textPassword.text,
+                  );
 
-                //TODO: Transition to Provider state management
-                Navigator.pop<Credential>(context, credential);
-              }
-            },
+                  //TODO: Transition to Provider state management
+                  Navigator.pop<Credential>(context, credential);
+                }
+              },
+            ),
           ),
         ],
       ),
       body: Padding(
         padding: padding,
-        //TODO: Put max limits on input
+        //TODO: Put max limit on input
         //TODO: When the keyboard 'check' key is pressed make the focused TextFormField move to the next one
         child: Form(
           key: keyForm,
@@ -75,16 +85,24 @@ class _CredentialAddState extends State<CredentialAdd> {
                     alignment: Alignment.centerLeft,
                     child: Text("Name"),
                   ),
-                  TextFormField(
-                    controller: textName,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "Name is required";
-                      }
-                      return null;
-                    },
-                    decoration: InputDecoration(
-                      hintText: "Example",
+                  Semantics(
+                    currentValueLength: textName.text.length,
+                    hint: "Enter account name",
+                    label: "Name text field",
+                    multiline: false,
+                    textField: true,
+                    child: TextFormField(
+                      autofocus: true,
+                      controller: textName,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Name is required";
+                        }
+                        return null;
+                      },
+                      decoration: InputDecoration(
+                        hintText: "Example",
+                      ),
                     ),
                   ),
                 ],
@@ -101,17 +119,24 @@ class _CredentialAddState extends State<CredentialAdd> {
                     alignment: Alignment.centerLeft,
                     child: Text("Address"),
                   ),
-                  TextFormField(
-                    controller: textAddress,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "Address is required";
-                      }
-                      //TODO: Check if valid URL
-                      return null;
-                    },
-                    decoration: InputDecoration(
-                      hintText: "www.example.com",
+                  Semantics(
+                    currentValueLength: textAddress.text.length,
+                    hint: "Enter web address",
+                    label: "Address text field",
+                    multiline: false,
+                    textField: true,
+                    child: TextFormField(
+                      controller: textAddress,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Address is required";
+                        }
+                        //TODO: Check if valid URL
+                        return null;
+                      },
+                      decoration: InputDecoration(
+                        hintText: "www.example.com",
+                      ),
                     ),
                   ),
                 ],
@@ -128,10 +153,17 @@ class _CredentialAddState extends State<CredentialAdd> {
                     alignment: Alignment.centerLeft,
                     child: Text("Username"),
                   ),
-                  TextFormField(
-                    controller: textUsername,
-                    decoration: InputDecoration(
-                      hintText: "user@example.com",
+                  Semantics(
+                    currentValueLength: textUsername.text.length,
+                    hint: "Enter username",
+                    label: "Username text field",
+                    multiline: false,
+                    textField: true,
+                    child: TextFormField(
+                      controller: textUsername,
+                      decoration: InputDecoration(
+                        hintText: "user@example.com",
+                      ),
                     ),
                   ),
                 ],
@@ -150,32 +182,47 @@ class _CredentialAddState extends State<CredentialAdd> {
                   ),
                   Stack(
                     children: <Widget>[
-                      TextFormField(
-                        controller: textPassword,
-                        obscureText: maskPassword,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return "Password is required";
-                          }
-                          return null;
-                        },
-                        decoration: InputDecoration(
-                          hintText: "password",
+                      Semantics(
+                        currentValueLength: textPassword.text.length,
+                        hint: "Enter account password",
+                        label: "Password text field",
+                        multiline: false,
+                        textField: true,
+                        child: TextFormField(
+                          controller: textPassword,
+                          obscureText: maskPassword,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return "Password is required";
+                            }
+                            return null;
+                          },
+                          decoration: InputDecoration(
+                            hintText: "password",
+                          ),
                         ),
                       ),
                       Align(
                         alignment: Alignment.centerRight,
-                        child: IconButton(
-                          tooltip:
-                              maskPassword ? "Show password" : "Hide password",
-                          icon: maskPassword
-                              ? Icon(Icons.visibility)
-                              : Icon(Icons.visibility_off),
-                          onPressed: () {
-                            setState(() {
-                              maskPassword = !maskPassword;
-                            });
-                          },
+                        child: Semantics(
+                          button: true,
+                          hint: maskPassword
+                              ? "Tap to show password"
+                              : "Tap to hide password",
+                          label: "Obscure password button",
+                          child: IconButton(
+                            icon: maskPassword
+                                ? Icon(Icons.visibility)
+                                : Icon(Icons.visibility_off),
+                            tooltip: maskPassword
+                                ? "Show password"
+                                : "Hide password",
+                            onPressed: () {
+                              setState(() {
+                                maskPassword = !maskPassword;
+                              });
+                            },
+                          ),
                         ),
                       ),
                     ],

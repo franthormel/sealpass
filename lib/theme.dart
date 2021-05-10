@@ -40,8 +40,7 @@ ThemeData themeData() {
 
 TextTheme _textTheme(ThemeData base) {
   //Rules
-  //1. Never touch subtitle1
-  //2. We're using bodyText1 as 'link' text
+  //1. TextField uses subtitle1 as default style so don't modify
   return base.textTheme.copyWith(
     headline4: TextStyle(
       color: kSwatchPrimary,
@@ -50,10 +49,6 @@ TextTheme _textTheme(ThemeData base) {
     headline6: TextStyle(
       color: kSwatchPrimary,
       fontWeight: FontWeight.normal,
-    ),
-    bodyText1: TextStyle(
-      fontSize: base.textTheme.bodyText2.fontSize,
-      color: kSwatchTextLink,
     ),
     bodyText2: TextStyle(
       color: kSwatchGreyDark,

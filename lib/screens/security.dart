@@ -34,10 +34,14 @@ class SecurityScreen extends StatelessWidget {
               ),
               Column(
                 children: <Widget>[
-                  Image.asset(
-                    "assets/images/logo.png",
-                    width: sizeLogo.width,
-                    height: sizeLogo.height,
+                  Semantics(
+                    image: true,
+                    label: "Logo",
+                    child: Image.asset(
+                      "assets/images/logo.png",
+                      width: sizeLogo.width,
+                      height: sizeLogo.height,
+                    ),
                   ),
                   Text(
                     "Sealpass",
@@ -49,18 +53,22 @@ class SecurityScreen extends StatelessWidget {
                   ),
                 ],
               ),
-              IconButton(
-                icon: Icon(Icons.fingerprint),
-                iconSize: sizeIcon,
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => Home(),
-                    ),
-                  );
-                },
-                tooltip: "Unlock",
+              Semantics(
+                button: true,
+                hint: "Directs to homepage",
+                child: IconButton(
+                  icon: Icon(Icons.fingerprint),
+                  iconSize: sizeIcon,
+                  tooltip: "Unlock using fingerprint",
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => Home(),
+                      ),
+                    );
+                  },
+                ),
               ),
             ],
           ),

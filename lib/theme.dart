@@ -29,6 +29,9 @@ ThemeData themeData() {
       backgroundColor: kSwatchPrimary,
       foregroundColor: kSwatchWhite,
     ),
+    iconTheme: IconThemeData(
+      color: kSwatchPrimary,
+    ),
     scaffoldBackgroundColor: kSwatchWhite,
     snackBarTheme: SnackBarThemeData(
       behavior: SnackBarBehavior.floating,
@@ -44,6 +47,10 @@ TextTheme _textTheme(ThemeData base) {
   return base.textTheme.copyWith(
     headline4: TextStyle(
       color: kSwatchPrimary,
+      fontFamily: kFontTitle,
+    ),
+    headline5: TextStyle(
+      color: kSwatchWhite,
       fontFamily: kFontTitle,
     ),
     headline6: TextStyle(

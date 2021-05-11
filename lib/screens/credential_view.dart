@@ -208,8 +208,8 @@ class _CredentialViewState extends State<CredentialView> {
                             label: "Obscure password button",
                             child: IconButton(
                               icon: maskPassword
-                                  ? Icon(Icons.visibility)
-                                  : Icon(Icons.visibility_off),
+                                  ? Icon(Icons.visibility_outlined)
+                                  : Icon(Icons.visibility_off_outlined),
                               tooltip: maskPassword
                                   ? "Show password"
                                   : "Hide password",

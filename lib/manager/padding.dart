@@ -10,6 +10,8 @@ class PaddingManager {
   static const _kCredentialAddVertical = .04;
   static const _kCredentialAddHorizontal = .05;
 
+  static const _kDrawerHeaderVertical = .01;
+
   ///Returns padding for [Security] screen
   static EdgeInsets security(Size size) {
     return EdgeInsets.symmetric(
@@ -35,6 +37,13 @@ class PaddingManager {
       top: size.height * _kCredentialAddVertical,
       right: horizontal,
       left: horizontal,
+    );
+  }
+
+  ///Returns padding for [DrawerHeader]
+  static EdgeInsets header(Size size) {
+    return EdgeInsets.symmetric(
+      vertical: size.height * _kDrawerHeaderVertical,
     );
   }
 }

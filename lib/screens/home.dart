@@ -6,6 +6,7 @@ import '../models/data/credentials.dart';
 import '../models/enum/enums.dart';
 import '../screens/credential_add.dart';
 import 'credential_view.dart';
+import 'drawer.dart';
 import 'search.dart';
 
 class Home extends StatefulWidget {
@@ -90,28 +91,18 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final padding = PaddingManager.home(size);
+    final paddingHome = PaddingManager.home(size);
 
     final theme = Theme.of(context);
-    final colorRefresh = theme.primaryColor;
+    final colorPrimary = theme.primaryColor;
     final styleTitle = theme.textTheme.headline6;
     final styleSubtitle = theme.textTheme.bodyText2;
 
     final count = credentials.length;
 
     return Scaffold(
+      drawer: DrawerCustom(),
       appBar: AppBar(
-        //TODO: Transform this into a drawer
-        leading: Semantics(
-          button: true,
-          hint: "Display menu",
-          label: "Menu button",
-          child: IconButton(
-            icon: Icon(Icons.menu),
-            tooltip: "Menu",
-            onPressed: () {},
-          ),
-        ),
         title: Semantics(
           hint: "Tap to search for an account",
           label: "Search area",
@@ -176,9 +167,9 @@ class _HomeState extends State<Home> {
         },
       ),
       body: Padding(
-        padding: padding,
+        padding: paddingHome,
         child: RefreshIndicator(
-          color: colorRefresh,
+          color: colorPrimary,
           key: keyRefresh,
           onRefresh: () {
             setState(() {});

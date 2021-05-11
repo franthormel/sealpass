@@ -6,6 +6,8 @@ class SizeManager {
 
   static const _kIconFinger = .07;
 
+  static const _kProfilePicture = .09;
+
   ///Returns the size for image logo
   static Size logo(Size size) {
     return Size(
@@ -14,8 +16,13 @@ class SizeManager {
     );
   }
 
-  ///Returns the [double] value for the fingerprint icon's width and height
+  ///Returns the [double] value for the fingerprint icon's height and width
   static double iconFinger(Size size) {
     return size.height * _kIconFinger;
+  }
+
+  ///Returns the [double] value for the profile picture's height an width
+  static double profilePicture(Size size) {
+    return size.height * _kProfilePicture;
   }
 }

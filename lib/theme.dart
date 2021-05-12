@@ -7,7 +7,6 @@ const kSwatchWhite = Colors.white;
 const kSwatchGreyDark = Color(0xFF7B7B7B);
 
 const kSwatchTextLink = Color(0xFF1A1B41);
-const kSwatchSuccess = Color(0xFF50C468);
 const kSwatchError = Color(0xFFF71641);
 
 const kFontTitle = "RobotoMono";
@@ -35,7 +34,7 @@ ThemeData themeData() {
     scaffoldBackgroundColor: kSwatchWhite,
     snackBarTheme: SnackBarThemeData(
       behavior: SnackBarBehavior.floating,
-      actionTextColor: kSwatchSuccess,
+      actionTextColor: kSwatchWhite,
     ),
     textTheme: _textTheme(base),
   );

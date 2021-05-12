@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../manager/padding.dart';
-import '../models/credential.dart';
-import 'credential_view.dart';
+import '../models/account.dart';
+import '../models/enums.dart';
+import '../models/provider.dart';
+import 'account_view.dart';
 
 class Search extends StatefulWidget {
-  final List<Credential> credentialSource;
-
-  const Search(this.credentialSource, {Key key}) : super(key: key);
+  Search({Key key}) : super(key: key);
 
   @override
   _SearchState createState() => _SearchState();
@@ -15,31 +16,77 @@ class Search extends StatefulWidget {
 
 class _SearchState extends State<Search> {
   final textSearch = TextEditingController();
+  final keyRefresh = GlobalKey<RefreshIndicatorState>();
 
-  List<Credential> credentialSearch;
+  List<Account> accounts;
 
   @override
   void initState() {
     super.initState();
-    resetSource();
+    sourceAccounts();
   }
 
-  ///Sets [List<Credential>] from its original state
-  void resetSource() {
-    credentialSearch = widget.credentialSource;
+  ///Displays a [SnackBar] then refreshes the [ListView]
+  ///
+  /// The [String] parameter is used as the [SnackBar]'s label
+  void notifyRefresh(String text) {
+    final messenger = ScaffoldMessenger.of(context);
+
+    messenger.showSnackBar(
+      SnackBar(
+        content: Text(text),
+        action: SnackBarAction(
+          label: 'OK',
+          onPressed: () {
+            messenger.hideCurrentSnackBar();
+          },
+        ),
+      ),
+    );
+
+    keyRefresh.currentState.show();
   }
 
-  ///Checks if the [List<Credential>] contains the text
-  void updateList(String text) {
-    setState(() {
-      resetSource();
+  ///Sets current list of accounts
+  ///
+  /// This is called everytime [TextField]'s text is changed per tap or
+  ///
+  /// when clear button is tapped.
+  void sourceAccounts() {
+    accounts = Provider.of<AccountsModel>(context, listen: false).source;
+  }
 
-      if (text.isNotEmpty) {
-        credentialSearch = credentialSearch
-            .where((credential) => credential.searchContains(text))
-            .toList();
+  ///Pushes a [AccountView] page
+  ///
+  /// Closes any active [SnackBar] before pushing [AccountView] page
+  ///
+  /// The [Account] details are displayed on [AccountView] page
+  ///
+  /// After the [AccountView] page has been dismissed
+  ///
+  /// Display a [SnackBar] and refreshes the [ListView]
+  void viewAccount(Account account) async {
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+
+    final view = await Navigator.push<ViewOptions>(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AccountView(account),
+      ),
+    );
+
+    //Show a SnackBar then refresh the ListView to notify the user
+    //that the change they made has been processed!
+    //TODO: Display Account's name in the SnackBar
+    if (view != null) {
+      if (view == ViewOptions.Edit) {
+        notifyRefresh("Account edited!");
+      } else if (view == ViewOptions.Delete) {
+        notifyRefresh("Account deleted!");
       }
-    });
+      sourceAccounts();
+      textSearch.clear();
+    }
   }
 
   @override
@@ -48,10 +95,11 @@ class _SearchState extends State<Search> {
     final padding = PaddingManager.home(size);
 
     final theme = Theme.of(context);
+    final colorPrimary = theme.primaryColor;
     final styleTitle = theme.textTheme.headline6;
     final styleSubtitle = theme.textTheme.bodyText2;
 
-    final count = credentialSearch.length;
+    final count = accounts.length;
 
     return Scaffold(
       appBar: AppBar(
@@ -67,7 +115,11 @@ class _SearchState extends State<Search> {
             autofocus: true,
             controller: textSearch,
             onChanged: (text) {
-              updateList(text);
+              setState(() {
+                sourceAccounts();
+                accounts =
+                    accounts.where((a) => a.searchContains(text)).toList();
+              });
             },
             decoration: InputDecoration(
               border: InputBorder.none,
@@ -88,8 +140,8 @@ class _SearchState extends State<Search> {
               onPressed: textSearch.text.isNotEmpty
                   ? () {
                       setState(() {
+                        sourceAccounts();
                         textSearch.clear();
-                        resetSource();
                       });
                     }
                   : null,
@@ -108,34 +160,38 @@ class _SearchState extends State<Search> {
             : Semantics(
                 hint: "Scroll up/down to view more",
                 label: "List of your accounts",
-                child: ListView.builder(
-                  itemCount: count,
-                  itemBuilder: (context, index) {
-                    final account = credentialSearch[index];
-
-                    return Semantics(
-                      hint: "Tap to view details",
-                      label: "Account details",
-                      child: ListTile(
-                        title: Text(
-                          account.name,
-                          style: styleTitle,
-                        ),
-                        subtitle: Text(
-                          account.username,
-                          style: styleSubtitle,
-                        ),
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => CredentialView(account),
-                            ),
-                          );
-                        },
-                      ),
-                    );
+                child: RefreshIndicator(
+                  color: colorPrimary,
+                  key: keyRefresh,
+                  onRefresh: () {
+                    setState(() {});
+                    return Future.delayed(const Duration(seconds: 2))
+                        .then((value) => null);
                   },
+                  child: ListView.builder(
+                    itemCount: count,
+                    itemBuilder: (context, index) {
+                      final account = accounts[index];
+
+                      return Semantics(
+                        hint: "Tap to view details",
+                        label: "Account details",
+                        child: ListTile(
+                          title: Text(
+                            account.name,
+                            style: styleTitle,
+                          ),
+                          subtitle: Text(
+                            account.username,
+                            style: styleSubtitle,
+                          ),
+                          onTap: () {
+                            viewAccount(account);
+                          },
+                        ),
+                      );
+                    },
+                  ),
                 ),
               ),
       ),

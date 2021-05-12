@@ -1,6 +1,6 @@
 import 'package:intl/intl.dart';
 
-class Credential {
+class Account {
   final String name;
   final String address;
 
@@ -9,7 +9,7 @@ class Credential {
 
   final DateTime time;
 
-  const Credential({
+  const Account({
     this.name,
     this.address,
     this.username,
@@ -17,10 +17,10 @@ class Credential {
     this.time,
   });
 
-  ///Create an instance of [Credential] wherein the [time] property
+  ///Create an instance of [Account] wherein the [time] property
   ///
   /// is set to [DateTime.now()]
-  Credential.now({
+  Account.now({
     this.name,
     this.address,
     this.username,

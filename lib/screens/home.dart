@@ -1,19 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../manager/padding.dart';
-import '../models/credential.dart';
-import '../models/data/credentials.dart';
-import '../models/enum/enums.dart';
-import '../screens/credential_add.dart';
-import 'credential_view.dart';
+import '../models/account.dart';
+import '../models/enums.dart';
+import '../models/provider.dart';
+import '../screens/account_add.dart';
+import 'account_view.dart';
 import 'drawer.dart';
 import 'search.dart';
 
 class Home extends StatefulWidget {
-  //Usually you get this from a server so we'll use this as our example
-  List<Credential> credentialsSource = sourceCredentials;
-
-  Home({Key key}) : super(key: key);
+  const Home({Key key}) : super(key: key);
 
   @override
   _HomeState createState() => _HomeState();
@@ -22,74 +20,100 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   final keyRefresh = GlobalKey<RefreshIndicatorState>();
 
-  List<Credential> credentials;
+  List<Account> accounts;
   SortType sorting;
 
-  @override
-  void initState() {
-    super.initState();
-    resetSource();
-  }
+  ///Displays a [SnackBar] then refreshes the [ListView]
+  ///
+  /// The [String] parameter is used as the [SnackBar]'s label
+  void notifyRefresh(String text) {
+    final messenger = ScaffoldMessenger.of(context);
 
-  ///Sets [List<Credential>] from its original state
-  void resetSource() {
-    credentials = widget.credentialsSource;
-  }
-
-  ///Sort [List<Credential>] depending on [SortType]
-  void sortCredentials() {
-    if (sorting == SortType.Alphabetical) {
-      credentials.sort((a, b) => a.name.compareTo(b.name));
-    } else if (sorting == SortType.Chronological) {
-      credentials.sort((a, b) => b.time.compareTo(a.time));
-    }
-  }
-
-  ///Add returned [Credential] to [List<Credential>] then refresh [ListView]
-  void addCredential(BuildContext context) async {
-    final credential = await Navigator.push<Credential>(
-      context,
-      MaterialPageRoute(
-        builder: (context) => CredentialAdd(),
+    messenger.showSnackBar(
+      SnackBar(
+        content: Text(text),
+        action: SnackBarAction(
+          label: 'OK',
+          onPressed: () {
+            messenger.hideCurrentSnackBar();
+          },
+        ),
       ),
     );
 
-    //This is where you usually add the new credential to a database or server
-    //1. We add it to the 'source'
-    //2. We get a copy of the source
-    //3. Sort our copy if possible
-    //4. Display a SnackBar
-    //5. Refresh ListView
-    //TODO: Transition to Provider state management
-    if (credential != null) {
-      credentials.add(credential);
+    keyRefresh.currentState.show();
+  }
 
-      resetSource();
+  ///Add returned [Account] to [List<Account>] then refresh [ListView]
+  void addAccount(AccountsModel provider) async {
+    final account = await Navigator.push<Account>(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AccountAdd(),
+      ),
+    );
+
+    //This is where you usually add the new account to a database or server
+    //1. We add it to the 'source'
+    //2. Sort our copy if possible
+    //3. Display a SnackBar
+    //4. Refresh ListView
+    if (account != null) {
+      provider.accountAdd(account);
 
       if (sorting != null) {
-        sortCredentials();
+        sortAccounts();
       }
 
-      final messenger = ScaffoldMessenger.of(context);
+      //TODO: Display Account's name in the SnackBar
+      notifyRefresh("Account created!");
+    }
+  }
 
-      messenger.showSnackBar(
-        SnackBar(
-          content: Text("Account created!"),
-          action: SnackBarAction(
-            label: 'OK',
-            onPressed: () {
-              messenger.hideCurrentSnackBar();
-            },
-          ),
-        ),
-      );
+  ///Pushes a [AccountView] page
+  ///
+  /// Closes any active [SnackBar] before pushing [AccountView] page
+  ///
+  /// The [Account] details are displayed on [AccountView] page
+  ///
+  /// After the [AccountView] page has been dismissed
+  ///
+  /// Display a [SnackBar] and refreshes the [ListView]
+  void viewAccount(Account account) async {
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
 
-      keyRefresh.currentState.show();
+    final view = await Navigator.push<ViewOptions>(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AccountView(account),
+      ),
+    );
+
+    //Show a SnackBar then refresh the ListView to notify the user
+    //that the change they made has been processed!
+    //TODO: Display Account's name in the SnackBar
+    if (view != null) {
+      if (view == ViewOptions.Edit) {
+        notifyRefresh("Account edited!");
+      } else if (view == ViewOptions.Delete) {
+        notifyRefresh("Account deleted!");
+      }
+    }
+  }
+
+  ///Sort [List<Account>] depending on [SortType]
+  void sortAccounts() {
+    if (sorting == SortType.Alphabetical) {
+      accounts.sort((a, b) => a.name.compareTo(b.name));
+    } else if (sorting == SortType.Chronological) {
+      accounts.sort((a, b) => b.time.compareTo(a.time));
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<AccountsModel>(context);
+
     final size = MediaQuery.of(context).size;
     final paddingHome = PaddingManager.home(size);
 
@@ -98,7 +122,9 @@ class _HomeState extends State<Home> {
     final styleTitle = theme.textTheme.headline6;
     final styleSubtitle = theme.textTheme.bodyText2;
 
-    final count = credentials.length;
+    accounts = provider.source;
+
+    final count = accounts.length;
 
     return Scaffold(
       drawer: DrawerCustom(),
@@ -112,7 +138,7 @@ class _HomeState extends State<Home> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => Search(widget.credentialsSource),
+                  builder: (context) => Search(),
                 ),
               );
             },
@@ -122,14 +148,15 @@ class _HomeState extends State<Home> {
           Semantics(
             button: true,
             hint: "Show sort options",
-            label: "Sort option",
+            label: "Sort options",
             child: PopupMenuButton<SortType>(
               icon: Icon(Icons.arrow_drop_down),
+              tooltip: "Sort options",
               onSelected: (value) {
                 sorting = value;
 
                 setState(() {
-                  sortCredentials();
+                  sortAccounts();
                 });
               },
               itemBuilder: (context) => <PopupMenuEntry<SortType>>[
@@ -163,32 +190,32 @@ class _HomeState extends State<Home> {
         child: Icon(Icons.add),
         tooltip: "Add account",
         onPressed: () {
-          addCredential(context);
+          addAccount(provider);
         },
       ),
       body: Padding(
         padding: paddingHome,
-        child: RefreshIndicator(
-          color: colorPrimary,
-          key: keyRefresh,
-          onRefresh: () {
-            setState(() {});
-            return Future.delayed(const Duration(seconds: 1))
-                .then((value) => null);
-          },
-          //TODO: Instead of showing text indicating empty state make it more lively by using an image or animation
-          child: count == 0
-              ? Align(
-                  alignment: Alignment.topCenter,
-                  child: Text("No accounts found!"),
-                )
-              : Semantics(
-                  hint: "Scroll up/down to view more",
-                  label: "List of your accounts",
+        //TODO: Instead of showing text indicating empty state make it more lively by using an image or animation
+        child: count == 0
+            ? Align(
+                alignment: Alignment.topCenter,
+                child: Text("No accounts found!"),
+              )
+            : Semantics(
+                hint: "Scroll up/down to view more",
+                label: "List of your accounts",
+                child: RefreshIndicator(
+                  color: colorPrimary,
+                  key: keyRefresh,
+                  onRefresh: () {
+                    setState(() {});
+                    return Future.delayed(const Duration(seconds: 2))
+                        .then((value) => null);
+                  },
                   child: ListView.builder(
                     itemCount: count,
                     itemBuilder: (context, index) {
-                      final account = credentials[index];
+                      final account = accounts[index];
 
                       return Semantics(
                         hint: "Tap to view details",
@@ -203,19 +230,14 @@ class _HomeState extends State<Home> {
                             style: styleSubtitle,
                           ),
                           onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => CredentialView(account),
-                              ),
-                            );
+                            viewAccount(account);
                           },
                         ),
                       );
                     },
                   ),
                 ),
-        ),
+              ),
       ),
     );
   }

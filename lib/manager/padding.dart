@@ -7,8 +7,8 @@ class PaddingManager {
   static const _kHomeVertical = .02;
   static const _kHomeHorizontal = .01;
 
-  static const _kCredentialAddVertical = .04;
-  static const _kCredentialAddHorizontal = .05;
+  static const _kAccountAddVertical = .04;
+  static const _kAccountAddHorizontal = .05;
 
   static const _kDrawerHeaderVertical = .01;
 
@@ -30,11 +30,11 @@ class PaddingManager {
     );
   }
 
-  ///Returns padding for [CredentialAdd] and [CredentialView] screen
-  static EdgeInsets credential(Size size) {
-    final horizontal = size.width * _kCredentialAddHorizontal;
+  ///Returns padding for [AccountAdd] and [AccountView] screen
+  static EdgeInsets account(Size size) {
+    final horizontal = size.width * _kAccountAddHorizontal;
     return EdgeInsets.only(
-      top: size.height * _kCredentialAddVertical,
+      top: size.height * _kAccountAddVertical,
       right: horizontal,
       left: horizontal,
     );

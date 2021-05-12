@@ -1,182 +1,182 @@
-import '../credential.dart';
+import '../account.dart';
 
-final List<Credential> sourceCredentials = [
-  Credential(
+final List<Account> sourceOfAccounts = [
+  Account(
     name: "Liluntia",
     address: "https://liluntia.com",
     username: "airlie@amail.com",
     password: "RPZwtYRx",
     time: DateTime(2020, 6, 24),
   ),
-  Credential(
+  Account(
     name: "Brushsy",
     address: "https://brushsy.com",
     username: "awaretube@bmail.com",
     password: "dBEpiWrE",
     time: DateTime(2020, 10, 5),
   ),
-  Credential(
+  Account(
     name: "SpriteLeaf",
     address: "https://spriteleaf.com",
     username: "fightdeer@cmail.com",
     password: "qmEq4Ysp",
     time: DateTime(2020, 10, 27),
   ),
-  Credential(
+  Account(
     name: "Alispy",
     address: "https://alispy.com",
     username: "themetrade@dmail.com",
     password: "fStaJQLj",
     time: DateTime(2020, 11, 16),
   ),
-  Credential(
+  Account(
     name: "Chainern",
     address: "https://chainern.com",
     username: "debutsnow@email.com",
     password: "g2hF8BWG",
     time: DateTime(2021, 2, 24),
   ),
-  Credential(
+  Account(
     name: "Semudge",
     address: "https://semudge.com",
     username: "oversalon@fmail.com",
     password: "4mubdzCZ",
     time: DateTime(2021, 1, 10),
   ),
-  Credential(
+  Account(
     name: "Sprayea",
     address: "https://sprayea.com",
     username: "ofbite@gmail.com",
     password: "jiC0K1Mu",
     time: DateTime(2020, 6, 4),
   ),
-  Credential(
+  Account(
     name: "Paiens",
     address: "https://paiens.com",
     username: "pillpower@hmail.com",
     password: "LWn6Qll5",
     time: DateTime(2020, 9, 18),
   ),
-  Credential(
+  Account(
     name: "Washood",
     address: "https://washood.com",
     username: "flycope@imail.com",
     password: "VCOfRMeS",
     time: DateTime(2021, 4, 2),
   ),
-  Credential(
+  Account(
     name: "Prickail",
     address: "https://prickail.com",
     username: "validrisk@jmail.com",
     password: "kpzNot6j",
     time: DateTime(2021, 1, 4),
   ),
-  Credential(
+  Account(
     name: "Intayoho",
     address: "https://intayoho.com",
     username: "steelfresh@kmail.com",
     password: "X0JohMiL",
     time: DateTime(2020, 6, 8),
   ),
-  Credential(
+  Account(
     name: "Mokunk",
     address: "https://mokunk.com",
     username: "grazecause@lmail.com",
     password: "wNsNJ7zH",
     time: DateTime(2020, 6, 24),
   ),
-  Credential(
+  Account(
     name: "Arniures",
     address: "https://arniures.com",
     username: "tubecan@mmail.com",
     password: "fRBayrHV",
     time: DateTime(2020, 8, 11),
   ),
-  Credential(
+  Account(
     name: "Lipinks",
     address: "https://lipinks.com",
     username: "wayleft@nmail.com",
     password: "RhC0DkmT",
     time: DateTime(2020, 10, 28),
   ),
-  Credential(
+  Account(
     name: "Vilugs",
     address: "https://vilugs.com",
     username: "sippower@omail.com",
     password: "wmEuxkG2",
     time: DateTime(2021, 1, 6),
   ),
-  Credential(
+  Account(
     name: "AudioKey",
     address: "https://audiokey.com",
     username: "soarif@pmail.com",
     password: "58mGi2SV",
     time: DateTime(2021, 2, 12),
   ),
-  Credential(
+  Account(
     name: "Audiofina",
     address: "https://audiofina.com",
     username: "sowuser@qmail.com",
     password: "yf0HygKb",
     time: DateTime(2021, 3, 16),
   ),
-  Credential(
+  Account(
     name: "Stereo.ly",
     address: "https://stereoly.com",
     username: "purefile@rmail.com",
     password: "VRf4Y29N",
     time: DateTime(2021, 2, 3),
   ),
-  Credential(
+  Account(
     name: "Velires",
     address: "https://velires.com",
     username: "reachsolo@smail.com",
     password: "VV6DpPOt",
     time: DateTime(2021, 4, 4),
   ),
-  Credential(
+  Account(
     name: "Wiizer",
     address: "https://wiizer.com",
     username: "electpure@tmail.com",
     password: "AUOOU0th",
     time: DateTime(2021, 2, 12),
   ),
-  Credential(
+  Account(
     name: "Whisper Time",
     address: "https://whispertime.com",
     username: "longclose@umail.com",
     password: "JItC7yzS",
     time: DateTime(2020, 9, 17),
   ),
-  Credential(
+  Account(
     name: "Whisperr",
     address: "https://whisperr.com",
     username: "runtrace@vmail.com",
     password: "fGCJi5zt",
     time: DateTime(2020, 11, 9),
   ),
-  Credential(
+  Account(
     name: "Lovlight",
     address: "https://lovlight.com",
     username: "breedmeans@wmail.com",
     password: "oherzEDC",
     time: DateTime(2021, 2, 29),
   ),
-  Credential(
+  Account(
     name: "Splutterd",
     address: "https://splutterd.com",
     username: "smallbill@xmail.com",
     password: "5kPOqOQ6",
     time: DateTime(2021, 3, 12),
   ),
-  Credential(
+  Account(
     name: "Narling",
     address: "https://narling.com",
     username: "norise@ymail.com",
     password: "534mFnCH",
     time: DateTime(2021, 1, 21),
   ),
-  Credential(
+  Account(
     name: "Shriking",
     address: "https://shriking.com",
     username: "bulbsmash@zmail.com",

@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 
 import '../manager/padding.dart';
-import '../models/credential.dart';
+import '../models/account.dart';
 
-class CredentialAdd extends StatefulWidget {
-  const CredentialAdd({Key key}) : super(key: key);
+class AccountAdd extends StatefulWidget {
+  const AccountAdd({Key key}) : super(key: key);
 
   @override
-  _CredentialAddState createState() => _CredentialAddState();
+  _AccountAddState createState() => _AccountAddState();
 }
 
-class _CredentialAddState extends State<CredentialAdd> {
+class _AccountAddState extends State<AccountAdd> {
   final keyForm = GlobalKey<FormState>();
   final textName = TextEditingController();
   final textAddress = TextEditingController();
@@ -22,7 +22,7 @@ class _CredentialAddState extends State<CredentialAdd> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final padding = PaddingManager.credential(size);
+    final padding = PaddingManager.account(size);
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -53,17 +53,15 @@ class _CredentialAddState extends State<CredentialAdd> {
               icon: Icon(Icons.check),
               tooltip: "Add",
               onPressed: () {
-                //Validate form
                 if (keyForm.currentState.validate()) {
-                  final credential = Credential.now(
+                  final account = Account.now(
                     name: textName.text,
                     address: textAddress.text,
                     username: textUsername.text,
                     password: textPassword.text,
                   );
 
-                  //TODO: Transition to Provider state management
-                  Navigator.pop<Credential>(context, credential);
+                  Navigator.pop<Account>(context, account);
                 }
               },
             ),

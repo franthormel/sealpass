@@ -19,6 +19,19 @@ class _AccountAddState extends State<AccountAdd> {
 
   bool maskPassword = true;
 
+  void popAccount() {
+    if (keyForm.currentState.validate()) {
+      final account = Account.now(
+        name: textName.text,
+        address: textAddress.text,
+        username: textUsername.text,
+        password: textPassword.text,
+      );
+
+      Navigator.pop<Account>(context, account);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -52,26 +65,13 @@ class _AccountAddState extends State<AccountAdd> {
             child: IconButton(
               icon: Icon(Icons.check),
               tooltip: "Add",
-              onPressed: () {
-                if (keyForm.currentState.validate()) {
-                  final account = Account.now(
-                    name: textName.text,
-                    address: textAddress.text,
-                    username: textUsername.text,
-                    password: textPassword.text,
-                  );
-
-                  Navigator.pop<Account>(context, account);
-                }
-              },
+              onPressed: popAccount,
             ),
           ),
         ],
       ),
       body: Padding(
         padding: padding,
-        //TODO: Put max limit on input
-        //TODO: When the keyboard 'check' key is pressed make the focused TextFormField move to the next one
         child: Form(
           key: keyForm,
           child: Column(
@@ -92,15 +92,17 @@ class _AccountAddState extends State<AccountAdd> {
                     child: TextFormField(
                       autofocus: true,
                       controller: textName,
+                      keyboardType: TextInputType.text,
+                      textInputAction: TextInputAction.next,
+                      decoration: InputDecoration(
+                        hintText: "Example",
+                      ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return "Name is required";
                         }
                         return null;
                       },
-                      decoration: InputDecoration(
-                        hintText: "Example",
-                      ),
                     ),
                   ),
                 ],
@@ -125,6 +127,11 @@ class _AccountAddState extends State<AccountAdd> {
                     textField: true,
                     child: TextFormField(
                       controller: textAddress,
+                      keyboardType: TextInputType.url,
+                      textInputAction: TextInputAction.next,
+                      decoration: InputDecoration(
+                        hintText: "https://www.example.com",
+                      ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return "Address is required";
@@ -132,9 +139,6 @@ class _AccountAddState extends State<AccountAdd> {
                         //TODO: Check if valid URL
                         return null;
                       },
-                      decoration: InputDecoration(
-                        hintText: "www.example.com",
-                      ),
                     ),
                   ),
                 ],
@@ -159,6 +163,8 @@ class _AccountAddState extends State<AccountAdd> {
                     textField: true,
                     child: TextFormField(
                       controller: textUsername,
+                      keyboardType: TextInputType.emailAddress,
+                      textInputAction: TextInputAction.next,
                       decoration: InputDecoration(
                         hintText: "user@example.com",
                       ),
@@ -189,15 +195,20 @@ class _AccountAddState extends State<AccountAdd> {
                         child: TextFormField(
                           controller: textPassword,
                           obscureText: maskPassword,
+                          keyboardType: TextInputType.visiblePassword,
+                          textInputAction: TextInputAction.done,
+                          decoration: InputDecoration(
+                            hintText: "password",
+                          ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return "Password is required";
                             }
                             return null;
                           },
-                          decoration: InputDecoration(
-                            hintText: "password",
-                          ),
+                          onFieldSubmitted: (_) {
+                            popAccount();
+                          },
                         ),
                       ),
                       Align(

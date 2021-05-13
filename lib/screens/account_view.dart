@@ -76,7 +76,12 @@ class _AccountViewState extends State<AccountView> {
         final colorDelete = theme.errorColor;
 
         return AlertDialog(
-          title: Text("Confirm Delete"),
+          title: Text(
+            "Confirm Delete",
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
           content: Text("Deleting an account cannot be undone!"),
           actions: <Widget>[
             TextButton(
@@ -209,6 +214,8 @@ class _AccountViewState extends State<AccountView> {
                     TextFormField(
                       controller: textName,
                       enabled: editing,
+                      keyboardType: TextInputType.text,
+                      textInputAction: TextInputAction.next,
                       decoration: InputDecoration(
                         hintText: "Example",
                       ),
@@ -241,8 +248,10 @@ class _AccountViewState extends State<AccountView> {
                         TextFormField(
                           controller: textAddress,
                           enabled: editing,
+                          keyboardType: TextInputType.url,
+                          textInputAction: TextInputAction.next,
                           decoration: InputDecoration(
-                            hintText: "www.example.com",
+                            hintText: "https://www.example.com",
                           ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -291,6 +300,8 @@ class _AccountViewState extends State<AccountView> {
                         TextFormField(
                           controller: textUsername,
                           enabled: editing,
+                          keyboardType: TextInputType.emailAddress,
+                          textInputAction: TextInputAction.next,
                           decoration: InputDecoration(
                             hintText: "user@example.com",
                           ),
@@ -354,8 +365,10 @@ class _AccountViewState extends State<AccountView> {
                           obscured: maskPassword,
                           child: TextFormField(
                             controller: textPassword,
-                            obscureText: maskPassword,
                             enabled: editing,
+                            obscureText: maskPassword,
+                            keyboardType: TextInputType.visiblePassword,
+                            textInputAction: TextInputAction.done,
                             decoration: InputDecoration(
                               hintText: "password",
                             ),

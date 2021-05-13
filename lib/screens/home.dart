@@ -65,8 +65,7 @@ class _HomeState extends State<Home> {
         sortAccounts();
       }
 
-      //TODO: Display Account's name in the SnackBar
-      notifyRefresh("Account created!");
+      notifyRefresh("Account created for ${account.name}!");
     }
   }
 
@@ -91,12 +90,11 @@ class _HomeState extends State<Home> {
 
     //Show a SnackBar then refresh the ListView to notify the user
     //that the change they made has been processed!
-    //TODO: Display Account's name in the SnackBar
     if (view != null) {
       if (view == ViewOptions.Edit) {
-        notifyRefresh("Account edited!");
+        notifyRefresh("Account edited for ${account.name}!");
       } else if (view == ViewOptions.Delete) {
-        notifyRefresh("Account deleted!");
+        notifyRefresh("Account deleted for ${account.name}!");
       }
     }
   }

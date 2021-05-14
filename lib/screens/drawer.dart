@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../manager/padding.dart';
+import '../manager/size.dart';
 
 class DrawerCustom extends StatefulWidget {
   const DrawerCustom({Key key}) : super(key: key);
@@ -10,14 +11,14 @@ class DrawerCustom extends StatefulWidget {
 }
 
 class _DrawerCustomState extends State<DrawerCustom> {
-  bool expandDisplayType = false;
-
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final photo = SizeManager.profile(size);
     final padding = PaddingManager.header(size);
 
     final theme = Theme.of(context);
+    final colorAccent = theme.accentColor;
     final colorPrimary = theme.primaryColor;
     final styleHeader = theme.textTheme.headline5;
     final styleSubtitle = theme.textTheme.bodyText2;
@@ -37,32 +38,58 @@ class _DrawerCustomState extends State<DrawerCustom> {
                   ),
                   child: Padding(
                     padding: padding,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.end,
                       children: <Widget>[
-                        Text(
-                          "Sealpass",
-                          style: styleHeader,
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              "Sealpass",
+                              style: styleHeader,
+                            ),
+                            Text(
+                              "account@email.com",
+                              style: styleSubtitle,
+                            ),
+                          ],
                         ),
-                        Text(
-                          "account@email.com",
-                          style: styleSubtitle,
+                        Container(
+                          height: photo,
+                          width: photo,
+                          decoration: BoxDecoration(
+                            color: colorAccent,
+                            shape: BoxShape.circle,
+                            gradient: LinearGradient(
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                              colors: <Color>[
+                                Color(0xFFFCE891),
+                                Color(0xFFF49C06),
+                              ],
+                            ),
+                          ),
                         ),
                       ],
                     ),
                   ),
                 ),
-                ListTile(
-                  leading: Icon(
-                    Icons.list,
-                    color: colorPrimary,
-                  ),
-                  title: Text("Display List Type"),
-                  //TODO: Show dialog for display types
-                  onTap: () {},
-                ),
               ],
+            ),
+            Align(
+              alignment: Alignment.bottomLeft,
+              child: ListTile(
+                leading: Icon(Icons.lock, color: colorPrimary),
+                title: Text("Seal Passwords"),
+                onTap: () {
+                  Navigator.popUntil(
+                    context,
+                    ModalRoute.withName('/'),
+                  );
+                },
+              ),
             ),
           ],
         ),

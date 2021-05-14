@@ -51,9 +51,9 @@ class _AccountAddState extends State<AccountAdd> {
               icon: Icon(Icons.description_outlined),
               tooltip: "Sample",
               onPressed: () {
-                textName.text = "Google";
-                textAddress.text = "accounts.google.com";
-                textUsername.text = "sample@gmail.com";
+                textName.text = "Sample";
+                textAddress.text = "accounts.sample.com";
+                textUsername.text = "account@smail.com";
                 textPassword.text = "P@s\$w0rd";
               },
             ),
@@ -136,7 +136,6 @@ class _AccountAddState extends State<AccountAdd> {
                         if (value == null || value.isEmpty) {
                           return "Address is required";
                         }
-                        //TODO: Check if valid URL
                         return null;
                       },
                     ),

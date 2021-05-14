@@ -33,7 +33,7 @@ class _HomeState extends State<Home> {
       SnackBar(
         content: Text(text),
         action: SnackBarAction(
-          label: 'OK',
+          label: 'DISMISS',
           onPressed: () {
             messenger.hideCurrentSnackBar();
           },
@@ -78,7 +78,7 @@ class _HomeState extends State<Home> {
   /// After the [AccountView] page has been dismissed
   ///
   /// Display a [SnackBar] and refreshes the [ListView]
-  void viewAccount(Account account) async {
+  void view(Account account) async {
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
 
     final view = await Navigator.push<ViewOptions>(
@@ -112,17 +112,18 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     final provider = Provider.of<AccountsModel>(context);
 
-    final size = MediaQuery.of(context).size;
-    final paddingHome = PaddingManager.home(size);
-
-    final theme = Theme.of(context);
-    final colorPrimary = theme.primaryColor;
-    final styleTitle = theme.textTheme.headline6;
-    final styleSubtitle = theme.textTheme.bodyText2;
-
     accounts = provider.source;
 
     final count = accounts.length;
+
+    final theme = Theme.of(context);
+    final styleTitle = theme.textTheme.headline6;
+    final styleSubtitle = theme.textTheme.bodyText2;
+
+    final size = MediaQuery.of(context).size;
+    final paddingHome = PaddingManager.home(size);
+
+    final color = theme.primaryColor;
 
     return Scaffold(
       drawer: DrawerCustom(),
@@ -183,7 +184,6 @@ class _HomeState extends State<Home> {
           ),
         ],
       ),
-      //TODO: Add FAB animation to add screen
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         tooltip: "Add account",
@@ -193,7 +193,6 @@ class _HomeState extends State<Home> {
       ),
       body: Padding(
         padding: paddingHome,
-        //TODO: Instead of showing text indicating empty state make it more lively by using an image or animation
         child: count == 0
             ? Align(
                 alignment: Alignment.topCenter,
@@ -203,7 +202,7 @@ class _HomeState extends State<Home> {
                 hint: "Scroll up/down to view more",
                 label: "List of your accounts",
                 child: RefreshIndicator(
-                  color: colorPrimary,
+                  color: color,
                   key: keyRefresh,
                   onRefresh: () {
                     setState(() {});
@@ -228,7 +227,7 @@ class _HomeState extends State<Home> {
                             style: styleSubtitle,
                           ),
                           onTap: () {
-                            viewAccount(account);
+                            view(account);
                           },
                         ),
                       );

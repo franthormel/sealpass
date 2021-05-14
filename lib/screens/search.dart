@@ -36,7 +36,7 @@ class _SearchState extends State<Search> {
       SnackBar(
         content: Text(text),
         action: SnackBarAction(
-          label: 'OK',
+          label: 'DISMISS',
           onPressed: () {
             messenger.hideCurrentSnackBar();
           },
@@ -149,7 +149,6 @@ class _SearchState extends State<Search> {
       ),
       body: Padding(
         padding: padding,
-        //TODO: Instead of showing text indicating empty state make it more lively by using an image or animation
         child: count == 0
             ? Align(
                 alignment: Alignment.topCenter,

@@ -41,8 +41,7 @@ ThemeData themeData() {
 }
 
 TextTheme _textTheme(ThemeData base) {
-  //Rules
-  //1. TextField uses subtitle1 as default style so don't modify
+  //TextField uses subtitle1 as default style so don't modify
   return base.textTheme.copyWith(
     headline4: TextStyle(
       color: kSwatchPrimary,

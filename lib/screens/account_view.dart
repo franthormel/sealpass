@@ -26,7 +26,6 @@ class _AccountViewState extends State<AccountView> {
 
   bool maskPassword = true;
 
-  //TODO: Restrict this variable to only change of value
   bool editing = false;
 
   @override
@@ -257,7 +256,6 @@ class _AccountViewState extends State<AccountView> {
                             if (value == null || value.isEmpty) {
                               return "Address is required";
                             }
-                            //TODO: Check if valid URL
                             return null;
                           },
                         ),

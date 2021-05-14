@@ -20,7 +20,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: theme,
-      home: SecurityScreen(),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => SecurityScreen(),
+      },
     );
   }
 }

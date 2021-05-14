@@ -8,7 +8,7 @@ class SizeManager {
 
   static const _kProfilePicture = .09;
 
-  ///Returns the size for image logo
+  ///Returns the size for security screen logo
   static Size logo(Size size) {
     return Size(
       size.width * _kLogoW,
@@ -22,7 +22,7 @@ class SizeManager {
   }
 
   ///Returns the [double] value for the profile picture's height an width
-  static double profilePicture(Size size) {
+  static double profile(Size size) {
     return size.height * _kProfilePicture;
   }
 }

@@ -10,7 +10,7 @@ import '../models/provider.dart';
 class AccountView extends StatefulWidget {
   final Account account;
 
-  const AccountView(this.account, {Key key}) : super(key: key);
+  const AccountView(this.account, {Key? key}) : super(key: key);
 
   @override
   _AccountViewState createState() => _AccountViewState();
@@ -41,7 +41,7 @@ class _AccountViewState extends State<AccountView> {
 
   ///Update the [Account] from the current list of accounts
   void actionEdit() {
-    if (keyForm.currentState.validate()) {
+    if (keyForm.currentState!.validate()) {
       final account = Account.now(
         name: textName.text,
         address: textAddress.text,

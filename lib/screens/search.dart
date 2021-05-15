@@ -8,7 +8,7 @@ import '../models/provider.dart';
 import 'account_view.dart';
 
 class Search extends StatefulWidget {
-  const Search({Key key}) : super(key: key);
+  const Search({Key? key}) : super(key: key);
 
   @override
   _SearchState createState() => _SearchState();
@@ -18,7 +18,7 @@ class _SearchState extends State<Search> {
   final textSearch = TextEditingController();
   final keyRefresh = GlobalKey<RefreshIndicatorState>();
 
-  List<Account> accounts;
+  late List<Account> accounts;
 
   @override
   void initState() {
@@ -44,7 +44,7 @@ class _SearchState extends State<Search> {
       ),
     );
 
-    keyRefresh.currentState.show();
+    keyRefresh.currentState!.show();
   }
 
   ///Sets current list of accounts

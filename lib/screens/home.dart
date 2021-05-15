@@ -11,7 +11,7 @@ import 'drawer.dart';
 import 'search.dart';
 
 class Home extends StatefulWidget {
-  const Home({Key key}) : super(key: key);
+  const Home({Key? key}) : super(key: key);
 
   @override
   _HomeState createState() => _HomeState();
@@ -20,8 +20,8 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   final keyRefresh = GlobalKey<RefreshIndicatorState>();
 
-  List<Account> accounts;
-  SortType sorting;
+  late List<Account> accounts;
+  SortType? sorting;
 
   ///Add returned [Account] to [List<Account>] then refresh [ListView]
   void add(AccountsModel provider) async {
@@ -65,11 +65,11 @@ class _HomeState extends State<Home> {
       ),
     );
 
-    keyRefresh.currentState.show();
+    keyRefresh.currentState!.show();
   }
 
   ///Sort [List<Account>] depending on [SortType]
-  void sort([SortType value]) {
+  void sort([SortType? value]) {
     if (value != null) {
       sorting = value;
     }

@@ -4,7 +4,7 @@ import '../manager/padding.dart';
 import '../manager/size.dart';
 
 class DrawerCustom extends StatefulWidget {
-  const DrawerCustom({Key key}) : super(key: key);
+  const DrawerCustom({Key? key}) : super(key: key);
 
   @override
   _DrawerCustomState createState() => _DrawerCustomState();

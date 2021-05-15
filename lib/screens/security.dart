@@ -5,7 +5,7 @@ import '../manager/size.dart';
 import 'home.dart';
 
 class SecurityScreen extends StatelessWidget {
-  const SecurityScreen({Key key}) : super(key: key);
+  const SecurityScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

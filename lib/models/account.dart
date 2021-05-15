@@ -10,21 +10,21 @@ class Account {
   final DateTime time;
 
   const Account({
-    this.name,
-    this.address,
-    this.username,
-    this.password,
-    this.time,
+    required this.name,
+    required this.address,
+    required this.username,
+    required this.password,
+    required this.time,
   });
 
   ///Create an instance of [Account] wherein the [time] property
   ///
   /// is set to [DateTime.now()]
   Account.now({
-    this.name,
-    this.address,
-    this.username,
-    this.password,
+    required this.name,
+    required this.address,
+    required this.username,
+    required this.password,
   }) : time = DateTime.now();
 
   ///Returns [true] if either [name], [address] or [username]

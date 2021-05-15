@@ -4,7 +4,7 @@ import '../manager/padding.dart';
 import '../models/account.dart';
 
 class AccountAdd extends StatefulWidget {
-  const AccountAdd({Key key}) : super(key: key);
+  const AccountAdd({Key? key}) : super(key: key);
 
   @override
   _AccountAddState createState() => _AccountAddState();
@@ -23,7 +23,7 @@ class _AccountAddState extends State<AccountAdd> {
   ///
   /// to the previous route if all [TextFormField]'s are placed
   void popAccount() {
-    if (keyForm.currentState.validate()) {
+    if (keyForm.currentState!.validate()) {
       final account = Account.now(
         name: textName.text,
         address: textAddress.text,

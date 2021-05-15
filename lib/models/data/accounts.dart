@@ -1,5 +1,7 @@
 import '../account.dart';
 
+// Usually we store/retrieve this from a server so
+// we'll use this instead as our example
 final List<Account> sourceOfAccounts = [
   Account(
     name: "Liluntia",

@@ -6,10 +6,12 @@ import 'screens/security.dart';
 import 'theme.dart';
 
 void main() {
-  runApp(ChangeNotifierProvider(
-    create: (context) => AccountsModel(),
-    child: MyApp(),
-  ));
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => AccountsModel(),
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -18,7 +20,6 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
       theme: theme,
       initialRoute: '/',
       routes: {

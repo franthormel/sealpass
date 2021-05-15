@@ -9,13 +9,12 @@ class SecurityScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     final size = MediaQuery.of(context).size;
-
     final sizeLogo = SizeManager.logo(size);
-    final sizeIcon = SizeManager.iconFinger(size);
+    final sizeIcon = SizeManager.fingerprint(size);
     final padding = PaddingManager.security(size);
 
+    final theme = Theme.of(context);
     final styleTitle = theme.textTheme.headline4;
     final styleSubtitle = theme.textTheme.subtitle1;
 

@@ -8,7 +8,7 @@ import '../models/provider.dart';
 import 'account_view.dart';
 
 class Search extends StatefulWidget {
-  Search({Key key}) : super(key: key);
+  const Search({Key key}) : super(key: key);
 
   @override
   _SearchState createState() => _SearchState();
@@ -29,7 +29,7 @@ class _SearchState extends State<Search> {
   ///Displays a [SnackBar] then refreshes the [ListView]
   ///
   /// The [String] parameter is used as the [SnackBar]'s label
-  void notifyRefresh(String text) {
+  void notify(String text) {
     final messenger = ScaffoldMessenger.of(context);
 
     messenger.showSnackBar(
@@ -53,7 +53,7 @@ class _SearchState extends State<Search> {
   ///
   /// when clear button is tapped.
   void sourceAccounts() {
-    accounts = Provider.of<AccountsModel>(context, listen: false).source;
+    accounts = Provider.of<AccountsModel>(context, listen: false).accounts;
   }
 
   ///Pushes a [AccountView] page
@@ -65,10 +65,10 @@ class _SearchState extends State<Search> {
   /// After the [AccountView] page has been dismissed
   ///
   /// Display a [SnackBar] and refreshes the [ListView]
-  void viewAccount(Account account) async {
+  void view(Account account) async {
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
 
-    final view = await Navigator.push<ViewOptions>(
+    final view = await Navigator.push<AccountOptions>(
       context,
       MaterialPageRoute(
         builder: (context) => AccountView(account),
@@ -78,10 +78,10 @@ class _SearchState extends State<Search> {
     //Show a SnackBar then refresh the ListView to notify the user
     //that the change they made has been processed!
     if (view != null) {
-      if (view == ViewOptions.Edit) {
-        notifyRefresh("Account edited for ${account.name}!");
-      } else if (view == ViewOptions.Delete) {
-        notifyRefresh("Account deleted for ${account.name}!");
+      if (view == AccountOptions.Edit) {
+        notify("Account edited for ${account.name}!");
+      } else if (view == AccountOptions.Delete) {
+        notify("Account deleted for ${account.name}!");
       }
       sourceAccounts();
       textSearch.clear();
@@ -115,8 +115,7 @@ class _SearchState extends State<Search> {
             onChanged: (text) {
               setState(() {
                 sourceAccounts();
-                accounts =
-                    accounts.where((a) => a.searchContains(text)).toList();
+                accounts = accounts.where((a) => a.contains(text)).toList();
               });
             },
             decoration: InputDecoration(
@@ -183,7 +182,7 @@ class _SearchState extends State<Search> {
                             style: styleSubtitle,
                           ),
                           onTap: () {
-                            viewAccount(account);
+                            view(account);
                           },
                         ),
                       );

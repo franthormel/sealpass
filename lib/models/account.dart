@@ -27,14 +27,15 @@ class Account {
     this.password,
   }) : time = DateTime.now();
 
-  ///Returns [true] if either [name] or [username] property contains
+  ///Returns [true] if either [name], [address] or [username]
   ///
-  /// the [String] parameter
-  bool searchContains(String text) {
+  ///property contains the [String] parameter
+  bool contains(String text) {
     //Make sure to normalize all strings involved by either
     //using toLowerCase() or toUpperCase()
     final search = text.toLowerCase();
     return name.toLowerCase().contains(search) ||
+        address.toLowerCase().contains(search) ||
         username.toLowerCase().contains(search);
   }
 

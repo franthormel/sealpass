@@ -12,25 +12,7 @@ class PaddingManager {
 
   static const _kDrawerHeaderVertical = .01;
 
-  ///Returns padding for [Security] screen
-  static EdgeInsets security(Size size) {
-    return EdgeInsets.symmetric(
-      horizontal: size.width * _kSecurityHorizontal,
-      vertical: size.height * _kSecurityVertical,
-    );
-  }
-
-  ///Returns padding for [Home] and [Search] screen
-  static EdgeInsets home(Size size) {
-    final horizontal = size.width * _kHomeHorizontal;
-    return EdgeInsets.only(
-      top: size.height * _kHomeVertical,
-      left: horizontal,
-      right: horizontal,
-    );
-  }
-
-  ///Returns padding for [AccountAdd] and [AccountView] screen
+  ///Returns [EdgeInsets] for [AccountAdd] and [AccountView] screen
   static EdgeInsets account(Size size) {
     final horizontal = size.width * _kAccountAddHorizontal;
     return EdgeInsets.only(
@@ -40,10 +22,28 @@ class PaddingManager {
     );
   }
 
-  ///Returns padding for [DrawerHeader]
+  ///Returns [EdgeInsets] for [DrawerHeader]
   static EdgeInsets header(Size size) {
     return EdgeInsets.symmetric(
       vertical: size.height * _kDrawerHeaderVertical,
+    );
+  }
+
+  ///Returns [EdgeInsets] for [Home] and [Search] screen
+  static EdgeInsets home(Size size) {
+    final horizontal = size.width * _kHomeHorizontal;
+    return EdgeInsets.only(
+      top: size.height * _kHomeVertical,
+      left: horizontal,
+      right: horizontal,
+    );
+  }
+
+  ///Returns [EdgeInsets] for [Security] screen
+  static EdgeInsets security(Size size) {
+    return EdgeInsets.symmetric(
+      horizontal: size.width * _kSecurityHorizontal,
+      vertical: size.height * _kSecurityVertical,
     );
   }
 }

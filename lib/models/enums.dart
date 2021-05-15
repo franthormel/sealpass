@@ -3,7 +3,7 @@ enum SortType {
   Chronological,
 }
 
-enum ViewOptions {
+enum AccountOptions {
   Edit,
   Delete,
 }

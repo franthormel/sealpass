@@ -8,7 +8,12 @@ class SizeManager {
 
   static const _kProfilePicture = .09;
 
-  ///Returns the size for security screen logo
+  ///Returns the [double] value for the fingerprint icon's height and width
+  static double fingerprint(Size size) {
+    return size.height * _kIconFinger;
+  }
+
+  ///Returns the [Size] for the security screen logo
   static Size logo(Size size) {
     return Size(
       size.width * _kLogoW,
@@ -16,12 +21,7 @@ class SizeManager {
     );
   }
 
-  ///Returns the [double] value for the fingerprint icon's height and width
-  static double iconFinger(Size size) {
-    return size.height * _kIconFinger;
-  }
-
-  ///Returns the [double] value for the profile picture's height an width
+  ///Returns the [double] value for the profile picture's height and width
   static double profile(Size size) {
     return size.height * _kProfilePicture;
   }

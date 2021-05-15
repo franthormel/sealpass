@@ -23,10 +23,34 @@ class _HomeState extends State<Home> {
   List<Account> accounts;
   SortType sorting;
 
+  ///Add returned [Account] to [List<Account>] then refresh [ListView]
+  void add(AccountsModel provider) async {
+    final account = await Navigator.push<Account>(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AccountAdd(),
+      ),
+    );
+
+    //This is where you usually add the new account to a database or server
+    //1. We add it to the 'source'
+    //2. Sort our copy if possible
+    //3. Display a SnackBar
+    if (account != null) {
+      provider.add(account);
+
+      if (sorting != null) {
+        sort();
+      }
+
+      notify("Account created for ${account.name}!");
+    }
+  }
+
   ///Displays a [SnackBar] then refreshes the [ListView]
   ///
   /// The [String] parameter is used as the [SnackBar]'s label
-  void notifyRefresh(String text) {
+  void notify(String text) {
     final messenger = ScaffoldMessenger.of(context);
 
     messenger.showSnackBar(
@@ -44,28 +68,16 @@ class _HomeState extends State<Home> {
     keyRefresh.currentState.show();
   }
 
-  ///Add returned [Account] to [List<Account>] then refresh [ListView]
-  void addAccount(AccountsModel provider) async {
-    final account = await Navigator.push<Account>(
-      context,
-      MaterialPageRoute(
-        builder: (context) => AccountAdd(),
-      ),
-    );
+  ///Sort [List<Account>] depending on [SortType]
+  void sort([SortType value]) {
+    if (value != null) {
+      sorting = value;
+    }
 
-    //This is where you usually add the new account to a database or server
-    //1. We add it to the 'source'
-    //2. Sort our copy if possible
-    //3. Display a SnackBar
-    //4. Refresh ListView
-    if (account != null) {
-      provider.accountAdd(account);
-
-      if (sorting != null) {
-        sortAccounts();
-      }
-
-      notifyRefresh("Account created for ${account.name}!");
+    if (sorting == SortType.Alphabetical) {
+      accounts.sort((a, b) => a.name.compareTo(b.name));
+    } else if (sorting == SortType.Chronological) {
+      accounts.sort((a, b) => b.time.compareTo(a.time));
     }
   }
 
@@ -78,10 +90,12 @@ class _HomeState extends State<Home> {
   /// After the [AccountView] page has been dismissed
   ///
   /// Display a [SnackBar] and refreshes the [ListView]
+  ///
+  /// If possible, sorts
   void view(Account account) async {
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
 
-    final view = await Navigator.push<ViewOptions>(
+    final view = await Navigator.push<AccountOptions>(
       context,
       MaterialPageRoute(
         builder: (context) => AccountView(account),
@@ -91,20 +105,11 @@ class _HomeState extends State<Home> {
     //Show a SnackBar then refresh the ListView to notify the user
     //that the change they made has been processed!
     if (view != null) {
-      if (view == ViewOptions.Edit) {
-        notifyRefresh("Account edited for ${account.name}!");
-      } else if (view == ViewOptions.Delete) {
-        notifyRefresh("Account deleted for ${account.name}!");
+      if (view == AccountOptions.Edit) {
+        notify("Account edited for ${account.name}!");
+      } else if (view == AccountOptions.Delete) {
+        notify("Account deleted for ${account.name}!");
       }
-    }
-  }
-
-  ///Sort [List<Account>] depending on [SortType]
-  void sortAccounts() {
-    if (sorting == SortType.Alphabetical) {
-      accounts.sort((a, b) => a.name.compareTo(b.name));
-    } else if (sorting == SortType.Chronological) {
-      accounts.sort((a, b) => b.time.compareTo(a.time));
     }
   }
 
@@ -112,18 +117,17 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     final provider = Provider.of<AccountsModel>(context);
 
-    accounts = provider.source;
+    accounts = provider.accounts;
 
     final count = accounts.length;
-
-    final theme = Theme.of(context);
-    final styleTitle = theme.textTheme.headline6;
-    final styleSubtitle = theme.textTheme.bodyText2;
 
     final size = MediaQuery.of(context).size;
     final paddingHome = PaddingManager.home(size);
 
+    final theme = Theme.of(context);
     final color = theme.primaryColor;
+    final styleTitle = theme.textTheme.headline6;
+    final styleSubtitle = theme.textTheme.bodyText2;
 
     return Scaffold(
       drawer: DrawerCustom(),
@@ -152,10 +156,8 @@ class _HomeState extends State<Home> {
               icon: Icon(Icons.arrow_drop_down),
               tooltip: "Sort options",
               onSelected: (value) {
-                sorting = value;
-
                 setState(() {
-                  sortAccounts();
+                  sort(value);
                 });
               },
               itemBuilder: (context) => <PopupMenuEntry<SortType>>[
@@ -188,7 +190,7 @@ class _HomeState extends State<Home> {
         child: Icon(Icons.add),
         tooltip: "Add account",
         onPressed: () {
-          addAccount(provider);
+          add(provider);
         },
       ),
       body: Padding(

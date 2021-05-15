@@ -29,7 +29,7 @@ class _DrawerCustomState extends State<DrawerCustom> {
       label: "Menu button",
       child: Drawer(
         child: Stack(
-          children: [
+          children: <Widget>[
             ListView(
               children: <Widget>[
                 DrawerHeader(

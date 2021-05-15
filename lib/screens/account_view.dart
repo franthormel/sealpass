@@ -10,7 +10,7 @@ import '../models/provider.dart';
 class AccountView extends StatefulWidget {
   final Account account;
 
-  AccountView(this.account, {Key key}) : super(key: key);
+  const AccountView(this.account, {Key key}) : super(key: key);
 
   @override
   _AccountViewState createState() => _AccountViewState();
@@ -24,8 +24,7 @@ class _AccountViewState extends State<AccountView> {
   final textPassword = TextEditingController();
   final textTime = TextEditingController();
 
-  bool maskPassword = true;
-
+  bool obscured = true;
   bool editing = false;
 
   @override
@@ -40,28 +39,21 @@ class _AccountViewState extends State<AccountView> {
     textTime.text = widget.account.timeFormat();
   }
 
-  ///Returns an [Account] given the text values for each [TextFormField]
-  ///
-  /// Used when editing
-  Account accountNew() {
-    return Account.now(
-      name: textName.text,
-      address: textAddress.text,
-      username: textUsername.text,
-      password: textPassword.text,
-    );
-  }
-
-  ///Updates the old [Account] from the current list of accounts with new properties
+  ///Update the [Account] from the current list of accounts
   void actionEdit() {
     if (keyForm.currentState.validate()) {
-      final account = accountNew();
+      final account = Account.now(
+        name: textName.text,
+        address: textAddress.text,
+        username: textUsername.text,
+        password: textPassword.text,
+      );
 
       final provider = Provider.of<AccountsModel>(context, listen: false);
 
-      provider.accountEdit(widget.account, account);
+      provider.edit(widget.account, account);
 
-      Navigator.pop<ViewOptions>(context, ViewOptions.Edit);
+      Navigator.pop<AccountOptions>(context, AccountOptions.Edit);
     }
   }
 
@@ -75,13 +67,13 @@ class _AccountViewState extends State<AccountView> {
         final colorDelete = theme.errorColor;
 
         return AlertDialog(
+          content: Text("Deleting an account cannot be undone!"),
           title: Text(
             "Confirm Delete",
             style: TextStyle(
               fontWeight: FontWeight.bold,
             ),
           ),
-          content: Text("Deleting an account cannot be undone!"),
           actions: <Widget>[
             TextButton(
               child: Text(
@@ -113,30 +105,44 @@ class _AccountViewState extends State<AccountView> {
     if (confirm != null && confirm) {
       final provider = Provider.of<AccountsModel>(context, listen: false);
 
-      provider.accountDelete(widget.account);
+      provider.delete(widget.account);
 
-      Navigator.pop<ViewOptions>(context, ViewOptions.Delete);
+      Navigator.pop<AccountOptions>(context, AccountOptions.Delete);
     }
   }
 
-  ///Call the method according to [ViewOptions] value
-  void callOptions(ViewOptions options) {
-    if (options == ViewOptions.Edit) {
-      switchToEditingMode();
-    } else if (options == ViewOptions.Delete) {
+  ///Call the method according to [AccountOptions] value
+  void callOptions(AccountOptions options) {
+    if (options == AccountOptions.Edit) {
+      setState(() {
+        editing = true;
+      });
+    } else if (options == AccountOptions.Delete) {
       actionDelete();
     }
   }
 
-  ///Sets editing [bool] value to [true]
+  ///Copies the given [TextEditingController]'s text into the [Clipboard]
   ///
-  /// Hides all unimportant widgets, enables all [TextFormFields] and changes
-  ///
-  /// action button
-  void switchToEditingMode() {
-    setState(() {
-      editing = true;
-    });
+  /// Displays a [SnackBar] notifying the [Clipboard]'s status
+  void copyNotify(TextEditingController controller, String text) {
+    Clipboard.setData(ClipboardData(
+      text: controller.text,
+    ));
+
+    final messenger = ScaffoldMessenger.of(context);
+
+    messenger.showSnackBar(
+      SnackBar(
+        content: Text("Copied $text to clipboard!"),
+        action: SnackBarAction(
+          label: "DISMISS",
+          onPressed: () {
+            messenger.hideCurrentSnackBar();
+          },
+        ),
+      ),
+    );
   }
 
   @override
@@ -164,14 +170,14 @@ class _AccountViewState extends State<AccountView> {
                   button: true,
                   hint: "Tap to view options",
                   label: "Options",
-                  child: PopupMenuButton<ViewOptions>(
+                  child: PopupMenuButton<AccountOptions>(
                     icon: Icon(Icons.more_vert),
                     onSelected: (value) {
                       callOptions(value);
                     },
-                    itemBuilder: (context) => <PopupMenuEntry<ViewOptions>>[
-                      PopupMenuItem<ViewOptions>(
-                        value: ViewOptions.Edit,
+                    itemBuilder: (context) => <PopupMenuEntry<AccountOptions>>[
+                      PopupMenuItem<AccountOptions>(
+                        value: AccountOptions.Edit,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
@@ -180,8 +186,8 @@ class _AccountViewState extends State<AccountView> {
                           ],
                         ),
                       ),
-                      PopupMenuItem<ViewOptions>(
-                        value: ViewOptions.Delete,
+                      PopupMenuItem<AccountOptions>(
+                        value: AccountOptions.Delete,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
@@ -301,7 +307,7 @@ class _AccountViewState extends State<AccountView> {
                           keyboardType: TextInputType.emailAddress,
                           textInputAction: TextInputAction.next,
                           decoration: InputDecoration(
-                            hintText: "user@example.com",
+                            hintText: "account@email.com",
                           ),
                         ),
                         if (!editing)
@@ -315,25 +321,7 @@ class _AccountViewState extends State<AccountView> {
                                 icon: Icon(Icons.copy),
                                 tooltip: "Copy username",
                                 onPressed: () {
-                                  Clipboard.setData(ClipboardData(
-                                    text: textUsername.text,
-                                  ));
-
-                                  final messenger =
-                                      ScaffoldMessenger.of(context);
-
-                                  messenger.showSnackBar(
-                                    SnackBar(
-                                      content:
-                                          Text("Copied username to clipboard!"),
-                                      action: SnackBarAction(
-                                        label: "DISMISS",
-                                        onPressed: () {
-                                          messenger.hideCurrentSnackBar();
-                                        },
-                                      ),
-                                    ),
-                                  );
+                                  copyNotify(textUsername, "username");
                                 },
                               ),
                             ),
@@ -360,16 +348,13 @@ class _AccountViewState extends State<AccountView> {
                     Stack(
                       children: <Widget>[
                         Semantics(
-                          obscured: maskPassword,
+                          obscured: obscured,
                           child: TextFormField(
                             controller: textPassword,
                             enabled: editing,
-                            obscureText: maskPassword,
+                            obscureText: obscured,
                             keyboardType: TextInputType.visiblePassword,
                             textInputAction: TextInputAction.done,
-                            decoration: InputDecoration(
-                              hintText: "password",
-                            ),
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return "Password is required";
@@ -383,20 +368,20 @@ class _AccountViewState extends State<AccountView> {
                           children: [
                             Semantics(
                               button: true,
-                              hint: maskPassword
+                              hint: obscured
                                   ? "Tap to show password"
                                   : "Tap to hide password",
                               label: "Obscure password button",
                               child: IconButton(
-                                icon: maskPassword
+                                icon: obscured
                                     ? Icon(Icons.visibility_outlined)
                                     : Icon(Icons.visibility_off_outlined),
-                                tooltip: maskPassword
+                                tooltip: obscured
                                     ? "Show password"
                                     : "Hide password",
                                 onPressed: () {
                                   setState(() {
-                                    maskPassword = !maskPassword;
+                                    obscured = !obscured;
                                   });
                                 },
                               ),
@@ -410,25 +395,7 @@ class _AccountViewState extends State<AccountView> {
                                   tooltip: "Copy password",
                                   icon: Icon(Icons.copy),
                                   onPressed: () {
-                                    Clipboard.setData(ClipboardData(
-                                      text: textPassword.text,
-                                    ));
-
-                                    final messenger =
-                                        ScaffoldMessenger.of(context);
-
-                                    messenger.showSnackBar(
-                                      SnackBar(
-                                        content: Text(
-                                            "Copied password to clipboard!"),
-                                        action: SnackBarAction(
-                                          label: "DISMISS",
-                                          onPressed: () {
-                                            messenger.hideCurrentSnackBar();
-                                          },
-                                        ),
-                                      ),
-                                    );
+                                    copyNotify(textPassword, "password");
                                   },
                                 ),
                               ),

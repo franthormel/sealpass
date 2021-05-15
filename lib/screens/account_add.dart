@@ -19,6 +19,9 @@ class _AccountAddState extends State<AccountAdd> {
 
   bool maskPassword = true;
 
+  ///Validates the current [Form] and returns an [Account]
+  ///
+  /// to the previous route if all [TextFormField]'s are placed
   void popAccount() {
     if (keyForm.currentState.validate()) {
       final account = Account.now(
@@ -51,9 +54,9 @@ class _AccountAddState extends State<AccountAdd> {
               icon: Icon(Icons.description_outlined),
               tooltip: "Sample",
               onPressed: () {
-                textName.text = "Sample";
-                textAddress.text = "accounts.sample.com";
-                textUsername.text = "account@smail.com";
+                textName.text = "Example";
+                textAddress.text = "https://www.example.com";
+                textUsername.text = "account@email.com";
                 textPassword.text = "P@s\$w0rd";
               },
             ),
@@ -165,7 +168,7 @@ class _AccountAddState extends State<AccountAdd> {
                       keyboardType: TextInputType.emailAddress,
                       textInputAction: TextInputAction.next,
                       decoration: InputDecoration(
-                        hintText: "user@example.com",
+                        hintText: "account@email.com",
                       ),
                     ),
                   ),
@@ -196,9 +199,6 @@ class _AccountAddState extends State<AccountAdd> {
                           obscureText: maskPassword,
                           keyboardType: TextInputType.visiblePassword,
                           textInputAction: TextInputAction.done,
-                          decoration: InputDecoration(
-                            hintText: "password",
-                          ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return "Password is required";

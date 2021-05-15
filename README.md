@@ -15,9 +15,9 @@ _*Note that cryptography and other security methods are **NOT** implemented!_
 <img src="https://raw.githubusercontent.com/pendraic/sealpass/main/docs/security.png" width="250"/>
 
 #### Homepage
-<img src="https://raw.githubusercontent.com/pendraic/sealpass/main/docs/home.png" width="250"/>
-<img src="https://raw.githubusercontent.com/pendraic/sealpass/main/docs/home_options.png" width="250"/>
-<img src="https://raw.githubusercontent.com/pendraic/sealpass/main/docs/home_sorted.png" width="250"/>
+![Home](https://raw.githubusercontent.com/pendraic/sealpass/main/docs/home.png)
+![Home Options](https://raw.githubusercontent.com/pendraic/sealpass/main/docs/home_options.png)
+![Home Sorted](https://raw.githubusercontent.com/pendraic/sealpass/main/docs/home_sorted.png)
 
 #### Search for an account
 <img src="https://raw.githubusercontent.com/pendraic/sealpass/main/docs/search_1.png" width="250"/>

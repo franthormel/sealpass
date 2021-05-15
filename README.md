@@ -7,41 +7,41 @@ This project is also available through
 - [Dribbble](https://dribbble.com/shots/15662156)
 - [Behance](https://www.behance.net/gallery/119147667/Password-Manager)
 
-_*Note that cryptography and other security methods are **NOT** implemented!_
+_*Note that cryptography and other security methods are in **NOT** implemented!_
 
 ## Screenshots
 
 #### Security area
-<img src="https://raw.githubusercontent.com/pendraic/sealpass/main/docs/security.png" width="250"/>
+<img src="https://raw.githubusercontent.com/pendraic/sealpass/main/docs/security.png" width="400"/>
 
 #### Homepage
-![Home](https://raw.githubusercontent.com/pendraic/sealpass/main/docs/home.png)
-![Home Options](https://raw.githubusercontent.com/pendraic/sealpass/main/docs/home_options.png)
-![Home Sorted](https://raw.githubusercontent.com/pendraic/sealpass/main/docs/home_sorted.png)
+<img src="https://raw.githubusercontent.com/pendraic/sealpass/main/docs/home.png" width="400"/>
+<img src="https://raw.githubusercontent.com/pendraic/sealpass/main/docs/home_options.png" width="400"/>
+<img src="https://raw.githubusercontent.com/pendraic/sealpass/main/docs/home_sorted.png" width="400"/>
 
 #### Search for an account
-<img src="https://raw.githubusercontent.com/pendraic/sealpass/main/docs/search_1.png" width="250"/>
-<img src="https://raw.githubusercontent.com/pendraic/sealpass/main/docs/search_2.png" width="250"/>
+<img src="https://raw.githubusercontent.com/pendraic/sealpass/main/docs/search_1.png" width="400"/>
+<img src="https://raw.githubusercontent.com/pendraic/sealpass/main/docs/search_2.png" width="400"/>
 
 #### View an account
-<img src="https://raw.githubusercontent.com/pendraic/sealpass/main/docs/view.png" width="250"/>
-<img src="https://raw.githubusercontent.com/pendraic/sealpass/main/docs/view_options.png" width="250"/>
+<img src="https://raw.githubusercontent.com/pendraic/sealpass/main/docs/view.png" width="400"/>
+<img src="https://raw.githubusercontent.com/pendraic/sealpass/main/docs/view_options.png" width="400"/>
 
 #### Edit an account
-<img src="https://raw.githubusercontent.com/pendraic/sealpass/main/docs/edit.png" width="250"/>
-<img src="https://raw.githubusercontent.com/pendraic/sealpass/main/docs/edit_home.png" width="250"/>
+<img src="https://raw.githubusercontent.com/pendraic/sealpass/main/docs/edit.png" width="400"/>
+<img src="https://raw.githubusercontent.com/pendraic/sealpass/main/docs/edit_home.png" width="400"/>
 
 #### Delete an account
-<img src="https://raw.githubusercontent.com/pendraic/sealpass/main/docs/delete.png" width="250"/>
-<img src="https://raw.githubusercontent.com/pendraic/sealpass/main/docs/delete_home.png" width="250"/>
+<img src="https://raw.githubusercontent.com/pendraic/sealpass/main/docs/delete.png" width="400"/>
+<img src="https://raw.githubusercontent.com/pendraic/sealpass/main/docs/delete_home.png" width="400"/>
 
 #### Add an account
-<img src="https://raw.githubusercontent.com/pendraic/sealpass/main/docs/add.png" width="250"/>
-<img src="https://raw.githubusercontent.com/pendraic/sealpass/main/docs/add_password.png" width="250"/>
-<img src="https://raw.githubusercontent.com/pendraic/sealpass/main/docs/add_home.png" width="250"/>
+<img src="https://raw.githubusercontent.com/pendraic/sealpass/main/docs/add.png" width="400"/>
+<img src="https://raw.githubusercontent.com/pendraic/sealpass/main/docs/add_password.png" width="400"/>
+<img src="https://raw.githubusercontent.com/pendraic/sealpass/main/docs/add_home.png" width="400"/>
 
 #### Navigation menu
-<img src="https://raw.githubusercontent.com/pendraic/sealpass/main/docs/exit.png" width="250"/>
+<img src="https://raw.githubusercontent.com/pendraic/sealpass/main/docs/exit.png" width="400"/>
 
 ## Getting Started
 

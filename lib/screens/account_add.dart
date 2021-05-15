@@ -45,22 +45,6 @@ class _AccountAddState extends State<AccountAdd> {
       appBar: AppBar(
         title: Text("Add an account"),
         actions: <Widget>[
-          //FOR SAMPLING ONLY!!!
-          Semantics(
-            button: true,
-            hint: "Tap to fill with sample",
-            label: "Sample button",
-            child: IconButton(
-              icon: Icon(Icons.description_outlined),
-              tooltip: "Sample",
-              onPressed: () {
-                textName.text = "Example";
-                textAddress.text = "https://www.example.com";
-                textUsername.text = "account@email.com";
-                textPassword.text = "P@s\$w0rd";
-              },
-            ),
-          ),
           Semantics(
             button: true,
             hint: "Tap to add account",

@@ -4,7 +4,7 @@ Password manager demo app built using Flutter
 
 This project is also available through 
 
-- Dribbble
+- [Google Play](https://play.google.com/store/apps/details?id=com.franca.demo.sealpass)
 - [Behance](https://www.behance.net/gallery/119147667/Password-Manager)
 
 _*Note that cryptography and other security methods are in **NOT** implemented!_

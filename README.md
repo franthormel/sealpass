@@ -11,36 +11,36 @@ _*Note that cryptography and other security methods are in **NOT** implemented!_
 
 ## Screenshots
 
-#### Security area
+### Security area
 <img src="https://raw.githubusercontent.com/pendraic/sealpass/main/docs/security.png" width="400"/>
 
-#### Homepage
+### Homepage
 <img src="https://raw.githubusercontent.com/pendraic/sealpass/main/docs/home.png" width="400"/>
 <img src="https://raw.githubusercontent.com/pendraic/sealpass/main/docs/home_options.png" width="400"/>
 <img src="https://raw.githubusercontent.com/pendraic/sealpass/main/docs/home_sorted.png" width="400"/>
 
-#### Search for an account
+### Search for an account
 <img src="https://raw.githubusercontent.com/pendraic/sealpass/main/docs/search_1.png" width="400"/>
 <img src="https://raw.githubusercontent.com/pendraic/sealpass/main/docs/search_2.png" width="400"/>
 
-#### View an account
+### View an account
 <img src="https://raw.githubusercontent.com/pendraic/sealpass/main/docs/view.png" width="400"/>
 <img src="https://raw.githubusercontent.com/pendraic/sealpass/main/docs/view_options.png" width="400"/>
 
-#### Edit an account
+### Edit an account
 <img src="https://raw.githubusercontent.com/pendraic/sealpass/main/docs/edit.png" width="400"/>
 <img src="https://raw.githubusercontent.com/pendraic/sealpass/main/docs/edit_home.png" width="400"/>
 
-#### Delete an account
+### Delete an account
 <img src="https://raw.githubusercontent.com/pendraic/sealpass/main/docs/delete.png" width="400"/>
 <img src="https://raw.githubusercontent.com/pendraic/sealpass/main/docs/delete_home.png" width="400"/>
 
-#### Add an account
+### Add an account
 <img src="https://raw.githubusercontent.com/pendraic/sealpass/main/docs/add.png" width="400"/>
 <img src="https://raw.githubusercontent.com/pendraic/sealpass/main/docs/add_password.png" width="400"/>
 <img src="https://raw.githubusercontent.com/pendraic/sealpass/main/docs/add_home.png" width="400"/>
 
-#### Navigation menu
+### Navigation menu
 <img src="https://raw.githubusercontent.com/pendraic/sealpass/main/docs/exit.png" width="400"/>
 
 ## Getting Started

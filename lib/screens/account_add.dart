@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../manager/padding.dart';
 import '../models/account.dart';
@@ -19,20 +20,25 @@ class _AccountAddState extends State<AccountAdd> {
 
   bool maskPassword = true;
 
-  ///Validates the current [Form] and returns an [Account]
-  ///
-  /// to the previous route if all [TextFormField]'s are placed
-  void popAccount() {
-    if (keyForm.currentState!.validate()) {
-      final account = Account.now(
-        name: textName.text,
-        address: textAddress.text,
-        username: textUsername.text,
-        password: textPassword.text,
-      );
+  bool get accountFormIsValid => keyForm.currentState!.validate();
 
-      Navigator.pop<Account>(context, account);
+  /// Returns an [Account] to the previous route if [Form] is valid
+  void popValidForm() {
+    if (accountFormIsValid) {
+      popCreatedAccount();
     }
+  }
+
+  /// Creates an [Account] from the [Form] and pops it back to the previous route
+  void popCreatedAccount() {
+    final account = Account.now(
+      name: textName.text,
+      address: textAddress.text,
+      username: textUsername.text,
+      password: textPassword.text,
+    );
+
+    Navigator.pop<Account>(context, account);
   }
 
   @override
@@ -52,7 +58,7 @@ class _AccountAddState extends State<AccountAdd> {
             child: IconButton(
               icon: Icon(Icons.check),
               tooltip: "Add",
-              onPressed: popAccount,
+              onPressed: popValidForm,
             ),
           ),
         ],
@@ -84,7 +90,7 @@ class _AccountAddState extends State<AccountAdd> {
                       decoration: InputDecoration(
                         hintText: "Example",
                       ),
-                      validator: (value) {
+                      validator: (value) { // TODO Refactor using a function and others too
                         if (value == null || value.isEmpty) {
                           return "Name is required";
                         }
@@ -190,7 +196,7 @@ class _AccountAddState extends State<AccountAdd> {
                             return null;
                           },
                           onFieldSubmitted: (_) {
-                            popAccount();
+                            popValidForm();
                           },
                         ),
                       ),

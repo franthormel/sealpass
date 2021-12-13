@@ -1,28 +1,21 @@
 import 'package:flutter/material.dart';
 
 class SizeManager {
-  static const _kLogoW = .26;
-  static const _kLogoH = .20;
-
-  static const _kIconFinger = .07;
-
-  static const _kProfilePicture = .09;
-
-  ///Returns the [double] value for the fingerprint icon's height and width
+  /// Returns the dimension for the fingerprint icon's height and width
   static double fingerprint(Size size) {
-    return size.height * _kIconFinger;
+    return size.height * .07;
   }
 
-  ///Returns the [Size] for the security screen logo
+  /// Returns the [Size] for the security screen logo
   static Size logo(Size size) {
     return Size(
-      size.width * _kLogoW,
-      size.height * _kLogoH,
+      size.width * .26,
+      size.height * .20,
     );
   }
 
-  ///Returns the [double] value for the profile picture's height and width
+  /// Returns the dimension for the profile picture's height and width
   static double profile(Size size) {
-    return size.height * _kProfilePicture;
+    return size.height * .09;
   }
 }

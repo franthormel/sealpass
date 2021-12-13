@@ -1,49 +1,38 @@
 import 'package:flutter/material.dart';
 
 class PaddingManager {
-  static const _kSecurityVertical = .02;
-  static const _kSecurityHorizontal = .05;
-
-  static const _kHomeVertical = .02;
-  static const _kHomeHorizontal = .01;
-
-  static const _kAccountAddVertical = .04;
-  static const _kAccountAddHorizontal = .05;
-
-  static const _kDrawerHeaderVertical = .01;
-
-  ///Returns [EdgeInsets] for [AccountAdd] and [AccountView] screen
+  /// Returns [EdgeInsets] for account screens
   static EdgeInsets account(Size size) {
-    final horizontal = size.width * _kAccountAddHorizontal;
+    final horizontal = size.width * .05;
     return EdgeInsets.only(
-      top: size.height * _kAccountAddVertical,
+      top: size.height * .04,
       right: horizontal,
       left: horizontal,
     );
   }
 
-  ///Returns [EdgeInsets] for [DrawerHeader]
-  static EdgeInsets header(Size size) {
+  /// Returns [EdgeInsets] for [DrawerHeader]
+  static EdgeInsets drawerHeader(Size size) {
     return EdgeInsets.symmetric(
-      vertical: size.height * _kDrawerHeaderVertical,
+      vertical: size.height * .01,
     );
   }
 
-  ///Returns [EdgeInsets] for [Home] and [Search] screen
-  static EdgeInsets home(Size size) {
-    final horizontal = size.width * _kHomeHorizontal;
+  /// Returns [EdgeInsets] for [Home] and [Search] screen
+  static EdgeInsets homeSearch(Size size) {
+    final horizontal = size.width * .01;
     return EdgeInsets.only(
-      top: size.height * _kHomeVertical,
+      top: size.height * .02,
       left: horizontal,
       right: horizontal,
     );
   }
 
-  ///Returns [EdgeInsets] for [Security] screen
+  /// Returns [EdgeInsets] for [Security] screen
   static EdgeInsets security(Size size) {
     return EdgeInsets.symmetric(
-      horizontal: size.width * _kSecurityHorizontal,
-      vertical: size.height * _kSecurityVertical,
+      horizontal: size.width * .05,
+      vertical: size.height * .02,
     );
   }
 }

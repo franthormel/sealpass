@@ -17,9 +17,6 @@ class Account {
     required this.time,
   });
 
-  ///Create an instance of [Account] wherein the [time] property
-  ///
-  /// is set to [DateTime.now()]
   Account.now({
     required this.name,
     required this.address,
@@ -27,26 +24,23 @@ class Account {
     required this.password,
   }) : time = DateTime.now();
 
-  ///Returns [true] if either [name], [address] or [username]
-  ///
-  ///property contains the [String] parameter
+  /// Returns [true] if either [name], [address] or [username] property contains [text]
   bool contains(String text) {
-    //Make sure to normalize all strings involved by either
-    //using toLowerCase() or toUpperCase()
     final search = text.toLowerCase();
-    return name.toLowerCase().contains(search) ||
-        address.toLowerCase().contains(search) ||
-        username.toLowerCase().contains(search);
+
+    final nameHasText = name.toLowerCase().contains(search);
+    final addressHasText = address.toLowerCase().contains(search);
+    final usernameHasText = username.toLowerCase().contains(search);
+
+    final hasText = nameHasText || addressHasText || usernameHasText;
+
+    return hasText;
   }
 
-  ///Returns formatted [DateTime] as 'M d, YYYY'
-  ///
-  /// Example:
+  /// Returns formatted [DateTime] as 'M d, YYYY H:MM'
   ///
   ///* January 1, 2001 01:10
   ///* February 2, 2002 02:20
   ///* March 3, 2003 03:30
-  String timeFormat() {
-    return DateFormat.yMMMMd().add_Hm().format(time);
-  }
+  get timeFormatted => DateFormat.yMMMMd().add_Hm().format(time);
 }

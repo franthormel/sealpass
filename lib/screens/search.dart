@@ -91,7 +91,7 @@ class _SearchState extends State<Search> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final padding = PaddingManager.home(size);
+    final padding = PaddingManager.homeSearch(size);
 
     final theme = Theme.of(context);
     final colorPrimary = theme.primaryColor;

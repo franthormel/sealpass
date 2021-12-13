@@ -36,7 +36,7 @@ class _AccountViewState extends State<AccountView> {
     textAddress.text = widget.account.address;
     textUsername.text = widget.account.username;
     textPassword.text = widget.account.password;
-    textTime.text = widget.account.timeFormat();
+    textTime.text = widget.account.timeFormatted;
   }
 
   ///Update the [Account] from the current list of accounts

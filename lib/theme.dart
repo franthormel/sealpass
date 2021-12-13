@@ -14,11 +14,13 @@ const kFontTitle = "RobotoMono";
 ThemeData themeData() {
   final base = ThemeData.light();
 
+  // TODO Refactor this according to new rules
   return base.copyWith(
     primaryColor: kSwatchPrimary,
-    accentColor: kSwatchWhite,
+    colorScheme: base.colorScheme.copyWith(
+      secondary: kSwatchWhite,
+    ),
     appBarTheme: AppBarTheme(
-      backwardsCompatibility: false,
       foregroundColor: kSwatchPrimary,
       backgroundColor: kSwatchSecondary,
     ),

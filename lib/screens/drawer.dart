@@ -15,10 +15,10 @@ class _DrawerCustomState extends State<DrawerCustom> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final photo = SizeManager.profile(size);
-    final padding = PaddingManager.header(size);
+    final padding = PaddingManager.drawerHeader(size);
 
     final theme = Theme.of(context);
-    final colorAccent = theme.accentColor;
+    final colorAccent = theme.colorScheme.secondary;
     final colorPrimary = theme.primaryColor;
     final styleHeader = theme.textTheme.headline5;
     final styleSubtitle = theme.textTheme.bodyText2;

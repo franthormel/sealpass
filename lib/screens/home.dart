@@ -122,7 +122,7 @@ class _HomeState extends State<Home> {
     final count = accounts.length;
 
     final size = MediaQuery.of(context).size;
-    final paddingHome = PaddingManager.home(size);
+    final paddingHome = PaddingManager.homeSearch(size);
 
     final theme = Theme.of(context);
     final color = theme.primaryColor;

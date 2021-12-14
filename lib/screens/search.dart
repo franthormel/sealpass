@@ -23,13 +23,19 @@ class _SearchState extends State<Search> {
   @override
   void initState() {
     super.initState();
-    sourceAccounts();
+    fetchAccounts();
   }
 
-  ///Displays a [SnackBar] then refreshes the [ListView]
-  ///
-  /// The [String] parameter is used as the [SnackBar]'s label
-  void notify(String text) {
+  Future<AccountOptions?> displayAccountViewPage(Account account) async {
+    return await Navigator.push<AccountOptions>(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AccountView(account),
+      ),
+    );
+  }
+
+  void displaySnackBarThenRefresh(String text) {
     final messenger = ScaffoldMessenger.of(context);
 
     messenger.showSnackBar(
@@ -38,53 +44,52 @@ class _SearchState extends State<Search> {
         action: SnackBarAction(
           label: 'DISMISS',
           onPressed: () {
-            messenger.hideCurrentSnackBar();
+            hideSnackbar(messenger);
           },
         ),
       ),
     );
 
-    keyRefresh.currentState!.show();
+    refresh();
   }
 
-  ///Sets current list of accounts
-  ///
-  /// This is called everytime [TextField]'s text is changed per tap or
-  ///
-  /// when clear button is tapped.
-  void sourceAccounts() {
+  void fetchAccounts() {
     accounts = Provider.of<AccountsModel>(context, listen: false).accounts;
   }
 
-  ///Pushes a [AccountView] page
-  ///
-  /// Closes any active [SnackBar] before pushing [AccountView] page
-  ///
-  /// The [Account] details are displayed on [AccountView] page
-  ///
-  /// After the [AccountView] page has been dismissed
-  ///
-  /// Display a [SnackBar] and refreshes the [ListView]
+  void hideSnackbar([ScaffoldMessengerState? messenger]) {
+    final scaffold = messenger ?? ScaffoldMessenger.of(context);
+
+    scaffold.hideCurrentSnackBar();
+  }
+
+  void notifyWithCleanup(String text) {
+    displaySnackBarThenRefresh(text);
+    fetchAccounts();
+    textSearch.clear();
+  }
+
+  void refresh() {
+    keyRefresh.currentState!.show();
+  }
+
   void view(Account account) async {
-    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    hideSnackbar();
 
-    final view = await Navigator.push<AccountOptions>(
-      context,
-      MaterialPageRoute(
-        builder: (context) => AccountView(account),
-      ),
-    );
+    await viewPage(account);
+  }
 
-    //Show a SnackBar then refresh the ListView to notify the user
-    //that the change they made has been processed!
-    if (view != null) {
-      if (view == AccountOptions.Edit) {
-        notify("Account edited for ${account.name}!");
-      } else if (view == AccountOptions.Delete) {
-        notify("Account deleted for ${account.name}!");
-      }
-      sourceAccounts();
-      textSearch.clear();
+  Future<void> viewPage(Account account) async {
+    final view = await displayAccountViewPage(account);
+
+    switch (view) {
+      case AccountOptions.edit:
+        notifyWithCleanup("Account edited for ${account.name}!");
+        break;
+      case AccountOptions.delete:
+        notifyWithCleanup("Account deleted for ${account.name}!");
+        break;
+      default:
     }
   }
 
@@ -114,11 +119,11 @@ class _SearchState extends State<Search> {
             controller: textSearch,
             onChanged: (text) {
               setState(() {
-                sourceAccounts();
+                fetchAccounts();
                 accounts = accounts.where((a) => a.contains(text)).toList();
               });
             },
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               border: InputBorder.none,
               hintText: "Name or email",
               labelText: "Search for your account",
@@ -132,12 +137,12 @@ class _SearchState extends State<Search> {
             hint: "Tap to clear search field",
             label: "Clear search field button",
             child: IconButton(
-              icon: Icon(Icons.delete_outline),
+              icon: const Icon(Icons.delete_outline),
               tooltip: "Clear",
               onPressed: textSearch.text.isNotEmpty
                   ? () {
                       setState(() {
-                        sourceAccounts();
+                        fetchAccounts();
                         textSearch.clear();
                       });
                     }
@@ -149,7 +154,7 @@ class _SearchState extends State<Search> {
       body: Padding(
         padding: padding,
         child: count == 0
-            ? Align(
+            ? const Align(
                 alignment: Alignment.topCenter,
                 child: Text("No accounts found!"),
               )

@@ -26,7 +26,7 @@ class SecurityScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Flexible(
+              const Flexible(
                 child: FractionallySizedBox(
                   heightFactor: .1,
                 ),
@@ -56,14 +56,14 @@ class SecurityScreen extends StatelessWidget {
                 button: true,
                 hint: "Directs to homepage",
                 child: IconButton(
-                  icon: Icon(Icons.fingerprint),
+                  icon: const Icon(Icons.fingerprint),
                   iconSize: sizeIcon,
                   tooltip: "Unlock using fingerprint",
                   onPressed: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => Home(),
+                        builder: (context) => const Home(),
                       ),
                     );
                   },

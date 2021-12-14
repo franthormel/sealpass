@@ -1,9 +1,9 @@
 enum SortType {
-  Alphabetical,
-  Chronological,
+  alphabetical,
+  chronological,
 }
 
 enum AccountOptions {
-  Edit,
-  Delete,
+  delete,
+  edit,
 }

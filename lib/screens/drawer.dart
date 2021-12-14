@@ -62,7 +62,7 @@ class _DrawerCustomState extends State<DrawerCustom> {
                           decoration: BoxDecoration(
                             color: colorAccent,
                             shape: BoxShape.circle,
-                            gradient: LinearGradient(
+                            gradient: const LinearGradient(
                               begin: Alignment.topLeft,
                               end: Alignment.bottomRight,
                               colors: <Color>[
@@ -82,7 +82,7 @@ class _DrawerCustomState extends State<DrawerCustom> {
               alignment: Alignment.bottomLeft,
               child: ListTile(
                 leading: Icon(Icons.lock, color: colorPrimary),
-                title: Text("Seal Passwords"),
+                title: const Text("Seal Passwords"),
                 onTap: () {
                   Navigator.popUntil(
                     context,

@@ -23,34 +23,30 @@ class _HomeState extends State<Home> {
   late List<Account> accounts;
   SortType? sorting;
 
-  ///Add returned [Account] to [List<Account>] then refresh [ListView]
-  void add(AccountsModel provider) async {
-    final account = await Navigator.push<Account>(
-      context,
-      MaterialPageRoute(
-        builder: (context) => AccountAdd(),
-      ),
-    );
+  void addThenNotify(AccountsModel provider) async {
+    final account = await createAccountViaPage();
 
-    //This is where you usually add the new account to a database or server
-    //1. We add it to the 'source'
-    //2. Sort our copy if possible
-    //3. Display a SnackBar
     if (account != null) {
       provider.add(account);
 
       if (sorting != null) {
-        sort();
+        sortByType();
       }
 
-      notify("Account created for ${account.name}!");
+      displaySnackBarThenRefresh("Account created for ${account.name}!");
     }
   }
 
-  ///Displays a [SnackBar] then refreshes the [ListView]
-  ///
-  /// The [String] parameter is used as the [SnackBar]'s label
-  void notify(String text) {
+  Future<Account?> createAccountViaPage() async {
+    return await Navigator.push<Account>(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const AccountAdd(),
+      ),
+    );
+  }
+
+  void displaySnackBarThenRefresh(String text) {
     final messenger = ScaffoldMessenger.of(context);
 
     messenger.showSnackBar(
@@ -59,57 +55,75 @@ class _HomeState extends State<Home> {
         action: SnackBarAction(
           label: 'DISMISS',
           onPressed: () {
-            messenger.hideCurrentSnackBar();
+            hideSnackbar(messenger);
           },
         ),
       ),
     );
 
-    keyRefresh.currentState!.show();
+    refresh();
   }
 
-  ///Sort [List<Account>] depending on [SortType]
-  void sort([SortType? value]) {
-    if (value != null) {
-      sorting = value;
-    }
-
-    if (sorting == SortType.Alphabetical) {
-      accounts.sort((a, b) => a.name.compareTo(b.name));
-    } else if (sorting == SortType.Chronological) {
-      accounts.sort((a, b) => b.time.compareTo(a.time));
-    }
-  }
-
-  ///Pushes a [AccountView] page
-  ///
-  /// Closes any active [SnackBar] before pushing [AccountView] page
-  ///
-  /// The [Account] details are displayed on [AccountView] page
-  ///
-  /// After the [AccountView] page has been dismissed
-  ///
-  /// Display a [SnackBar] and refreshes the [ListView]
-  ///
-  /// If possible, sorts
-  void view(Account account) async {
-    ScaffoldMessenger.of(context).hideCurrentSnackBar();
-
-    final view = await Navigator.push<AccountOptions>(
+  Future<AccountOptions?> displayAccountViewPage(Account account) async {
+    return await Navigator.push<AccountOptions>(
       context,
       MaterialPageRoute(
         builder: (context) => AccountView(account),
       ),
     );
+  }
 
-    //Show a SnackBar then refresh the ListView to notify the user
-    //that the change they made has been processed!
-    if (view != null) {
-      if (view == AccountOptions.Edit) {
-        notify("Account edited for ${account.name}!");
-      } else if (view == AccountOptions.Delete) {
-        notify("Account deleted for ${account.name}!");
-      }
+  void hideSnackbar([ScaffoldMessengerState? messenger]) {
+    final scaffold = messenger ?? ScaffoldMessenger.of(context);
+
+    scaffold.hideCurrentSnackBar();
+  }
+
+  void refresh() {
+    keyRefresh.currentState!.show();
+  }
+
+  void sortAlphabetically() {
+    accounts.sort((a, b) => a.name.compareTo(b.name));
+  }
+
+  void sortChronologically() {
+    accounts.sort((a, b) => b.time.compareTo(a.time));
+  }
+
+  void sortByType([SortType? value]) {
+    if (value != null) {
+      sorting = value;
+    }
+
+    switch (sorting) {
+      case SortType.alphabetical:
+        sortAlphabetically();
+        break;
+      case SortType.chronological:
+        sortChronologically();
+        break;
+      default:
+    }
+  }
+
+  void view(Account account) async {
+    hideSnackbar();
+
+    await viewPage(account);
+  }
+
+  Future<void> viewPage(Account account) async {
+    final view = await displayAccountViewPage(account);
+
+    switch (view) {
+      case AccountOptions.edit:
+        displaySnackBarThenRefresh("Account edited for ${account.name}!");
+        break;
+      case AccountOptions.delete:
+        displaySnackBarThenRefresh("Account deleted for ${account.name}!");
+        break;
+      default:
     }
   }
 
@@ -130,18 +144,18 @@ class _HomeState extends State<Home> {
     final styleSubtitle = theme.textTheme.bodyText2;
 
     return Scaffold(
-      drawer: DrawerCustom(),
+      drawer: const DrawerCustom(),
       appBar: AppBar(
         title: Semantics(
           hint: "Tap to search for an account",
           label: "Search area",
           child: GestureDetector(
-            child: Text("Search for your account"),
+            child: const Text("Search for your account"),
             onTap: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => Search(),
+                  builder: (context) => const Search(),
                 ),
               );
             },
@@ -153,29 +167,29 @@ class _HomeState extends State<Home> {
             hint: "Show sort options",
             label: "Sort options",
             child: PopupMenuButton<SortType>(
-              icon: Icon(Icons.arrow_drop_down),
+              icon: const Icon(Icons.arrow_drop_down),
               tooltip: "Sort options",
               onSelected: (value) {
                 setState(() {
-                  sort(value);
+                  sortByType(value);
                 });
               },
               itemBuilder: (context) => <PopupMenuEntry<SortType>>[
                 PopupMenuItem<SortType>(
-                  value: SortType.Alphabetical,
+                  value: SortType.alphabetical,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
+                    children: const <Widget>[
                       Icon(Icons.sort_by_alpha),
                       Text("Alphabetically"),
                     ],
                   ),
                 ),
                 PopupMenuItem<SortType>(
-                  value: SortType.Chronological,
+                  value: SortType.chronological,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
+                    children: const <Widget>[
                       Icon(Icons.schedule),
                       Text("Recently Used"),
                     ],
@@ -187,16 +201,16 @@ class _HomeState extends State<Home> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
         tooltip: "Add account",
         onPressed: () {
-          add(provider);
+          addThenNotify(provider);
         },
       ),
       body: Padding(
         padding: paddingHome,
         child: count == 0
-            ? Align(
+            ? const Align(
                 alignment: Alignment.topCenter,
                 child: Text("No accounts found!"),
               )

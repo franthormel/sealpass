@@ -2,62 +2,57 @@ import 'package:flutter/material.dart';
 
 const kSwatchPrimary = Color(0xFF262626);
 const kSwatchSecondary = Color(0xFFF4F4F4);
-
-const kSwatchWhite = Colors.white;
 const kSwatchGreyDark = Color(0xFF7B7B7B);
-
 const kSwatchTextLink = Color(0xFF1A1B41);
 const kSwatchError = Color(0xFFF71641);
-
-const kFontTitle = "RobotoMono";
 
 ThemeData themeData() {
   final base = ThemeData.light();
 
-  // TODO Refactor this according to new rules
   return base.copyWith(
     primaryColor: kSwatchPrimary,
     colorScheme: base.colorScheme.copyWith(
-      secondary: kSwatchWhite,
+      secondary: Colors.white,
     ),
-    appBarTheme: AppBarTheme(
+    appBarTheme: const AppBarTheme(
       foregroundColor: kSwatchPrimary,
       backgroundColor: kSwatchSecondary,
     ),
-    backgroundColor: kSwatchWhite,
+    backgroundColor: Colors.white,
     errorColor: kSwatchError,
-    floatingActionButtonTheme: FloatingActionButtonThemeData(
+    floatingActionButtonTheme: const FloatingActionButtonThemeData(
       backgroundColor: kSwatchPrimary,
-      foregroundColor: kSwatchWhite,
+      foregroundColor: Colors.white,
     ),
-    iconTheme: IconThemeData(
+    iconTheme: const IconThemeData(
       color: kSwatchPrimary,
     ),
-    scaffoldBackgroundColor: kSwatchWhite,
-    snackBarTheme: SnackBarThemeData(
+    scaffoldBackgroundColor: Colors.white,
+    snackBarTheme: const SnackBarThemeData(
       behavior: SnackBarBehavior.floating,
-      actionTextColor: kSwatchWhite,
+      actionTextColor: Colors.white,
     ),
     textTheme: _textTheme(base),
   );
 }
 
 TextTheme _textTheme(ThemeData base) {
-  //TextField uses subtitle1 as default style so don't modify
+  const fontFamily = "RobotoMono";
+
   return base.textTheme.copyWith(
-    headline4: TextStyle(
+    headline4: const TextStyle(
       color: kSwatchPrimary,
-      fontFamily: kFontTitle,
+      fontFamily: fontFamily,
     ),
-    headline5: TextStyle(
-      color: kSwatchWhite,
-      fontFamily: kFontTitle,
+    headline5: const TextStyle(
+      color: Colors.white,
+      fontFamily: fontFamily,
     ),
-    headline6: TextStyle(
+    headline6: const TextStyle(
       color: kSwatchPrimary,
       fontWeight: FontWeight.normal,
     ),
-    bodyText2: TextStyle(
+    bodyText2: const TextStyle(
       color: kSwatchGreyDark,
     ),
   );

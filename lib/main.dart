@@ -17,13 +17,15 @@ void main() {
 class MyApp extends StatelessWidget {
   final theme = themeData();
 
+   MyApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: theme,
       initialRoute: '/',
       routes: {
-        '/': (context) => SecurityScreen(),
+        '/': (context) => const SecurityScreen(),
       },
     );
   }

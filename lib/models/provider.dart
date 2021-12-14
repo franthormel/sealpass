@@ -4,7 +4,7 @@ import 'account.dart';
 import 'data/accounts.dart';
 
 class AccountsModel extends ChangeNotifier {
-  List<Account> _accounts = sourceOfAccounts;
+  final List<Account> _accounts = sourceOfAccounts;
 
   List<Account> get accounts => _accounts;
 

@@ -4,6 +4,7 @@ class PaddingManager {
   /// Returns [EdgeInsets] for account screens
   static EdgeInsets account(Size size) {
     final horizontal = size.width * .05;
+
     return EdgeInsets.only(
       top: size.height * .04,
       right: horizontal,
@@ -21,6 +22,7 @@ class PaddingManager {
   /// Returns [EdgeInsets] for [Home] and [Search] screen
   static EdgeInsets homeSearch(Size size) {
     final horizontal = size.width * .01;
+
     return EdgeInsets.only(
       top: size.height * .02,
       left: horizontal,

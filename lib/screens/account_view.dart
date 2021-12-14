@@ -24,41 +24,47 @@ class _AccountViewState extends State<AccountView> {
   final textPassword = TextEditingController();
   final textTime = TextEditingController();
 
-  bool obscured = true;
   bool editing = false;
+  bool obscured = true;
 
   @override
   void initState() {
     super.initState();
-
-    //Display account details
-    textName.text = widget.account.name;
-    textAddress.text = widget.account.address;
-    textUsername.text = widget.account.username;
-    textPassword.text = widget.account.password;
-    textTime.text = widget.account.timeFormatted;
+    displayDetails();
   }
 
-  ///Update the [Account] from the current list of accounts
-  void actionEdit() {
-    if (keyForm.currentState!.validate()) {
-      final account = Account.now(
-        name: textName.text,
-        address: textAddress.text,
-        username: textUsername.text,
-        password: textPassword.text,
-      );
-
-      final provider = Provider.of<AccountsModel>(context, listen: false);
-
-      provider.edit(widget.account, account);
-
-      Navigator.pop<AccountOptions>(context, AccountOptions.Edit);
+  void callOptions(AccountOptions options) {
+    if (options == AccountOptions.edit) {
+      setState(() {
+        editing = true;
+      });
+    } else if (options == AccountOptions.delete) {
+      delete();
     }
   }
 
-  ///Delete the [Account] from the current list of accounts
-  void actionDelete() async {
+  /// Copies the text into the [Clipboard] then displays a [SnackBar]
+  void copyNotify(TextEditingController controller, String text) {
+    Clipboard.setData(ClipboardData(
+      text: controller.text,
+    ));
+
+    final messenger = ScaffoldMessenger.of(context);
+
+    messenger.showSnackBar(
+      SnackBar(
+        content: Text("Copied $text to clipboard!"),
+        action: SnackBarAction(
+          label: "DISMISS",
+          onPressed: () {
+            messenger.hideCurrentSnackBar();
+          },
+        ),
+      ),
+    );
+  }
+
+  void delete() async {
     final confirm = await showDialog<bool>(
       context: context,
       builder: (context) {
@@ -67,8 +73,8 @@ class _AccountViewState extends State<AccountView> {
         final colorDelete = theme.errorColor;
 
         return AlertDialog(
-          content: Text("Deleting an account cannot be undone!"),
-          title: Text(
+          content: const Text("Deleting an account cannot be undone!"),
+          title: const Text(
             "Confirm Delete",
             style: TextStyle(
               fontWeight: FontWeight.bold,
@@ -107,42 +113,42 @@ class _AccountViewState extends State<AccountView> {
 
       provider.delete(widget.account);
 
-      Navigator.pop<AccountOptions>(context, AccountOptions.Delete);
+      Navigator.pop<AccountOptions>(context, AccountOptions.delete);
     }
   }
 
-  ///Call the method according to [AccountOptions] value
-  void callOptions(AccountOptions options) {
-    if (options == AccountOptions.Edit) {
-      setState(() {
-        editing = true;
-      });
-    } else if (options == AccountOptions.Delete) {
-      actionDelete();
+  void displayDetails() {
+    textName.text = widget.account.name;
+    textAddress.text = widget.account.address;
+    textUsername.text = widget.account.username;
+    textPassword.text = widget.account.password;
+    textTime.text = widget.account.timeFormatted;
+  }
+
+  void edit() {
+    if (keyForm.currentState!.validate()) {
+      final provider = Provider.of<AccountsModel>(context, listen: false);
+      final account = Account.now(
+        name: textName.text,
+        address: textAddress.text,
+        username: textUsername.text,
+        password: textPassword.text,
+      );
+
+      provider.edit(widget.account, account);
+
+      Navigator.pop<AccountOptions>(context, AccountOptions.edit);
     }
   }
 
-  ///Copies the given [TextEditingController]'s text into the [Clipboard]
-  ///
-  /// Displays a [SnackBar] notifying the [Clipboard]'s status
-  void copyNotify(TextEditingController controller, String text) {
-    Clipboard.setData(ClipboardData(
-      text: controller.text,
-    ));
+  String? fieldValidator(String? input) {
+    String? value;
 
-    final messenger = ScaffoldMessenger.of(context);
+    if (input == null || input.isEmpty) {
+      value = "This field is required";
+    }
 
-    messenger.showSnackBar(
-      SnackBar(
-        content: Text("Copied $text to clipboard!"),
-        action: SnackBarAction(
-          label: "DISMISS",
-          onPressed: () {
-            messenger.hideCurrentSnackBar();
-          },
-        ),
-      ),
-    );
+    return value;
   }
 
   @override
@@ -153,7 +159,9 @@ class _AccountViewState extends State<AccountView> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: editing ? Text("Edit information") : Text("View information"),
+        title: editing
+            ? const Text("Edit information")
+            : const Text("View information"),
         actions: <Widget>[
           editing
               ? Semantics(
@@ -161,9 +169,9 @@ class _AccountViewState extends State<AccountView> {
                   hint: "Tap to edit",
                   label: "Edit button",
                   child: IconButton(
-                    icon: Icon(Icons.edit),
+                    icon: const Icon(Icons.edit),
                     tooltip: "Edit account",
-                    onPressed: actionEdit,
+                    onPressed: edit,
                   ),
                 )
               : Semantics(
@@ -171,26 +179,26 @@ class _AccountViewState extends State<AccountView> {
                   hint: "Tap to view options",
                   label: "Options",
                   child: PopupMenuButton<AccountOptions>(
-                    icon: Icon(Icons.more_vert),
+                    icon: const Icon(Icons.more_vert),
                     onSelected: (value) {
                       callOptions(value);
                     },
                     itemBuilder: (context) => <PopupMenuEntry<AccountOptions>>[
                       PopupMenuItem<AccountOptions>(
-                        value: AccountOptions.Edit,
+                        value: AccountOptions.edit,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
+                          children: const <Widget>[
                             Icon(Icons.edit_outlined),
                             Text("Edit"),
                           ],
                         ),
                       ),
                       PopupMenuItem<AccountOptions>(
-                        value: AccountOptions.Delete,
+                        value: AccountOptions.delete,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
+                          children: const <Widget>[
                             Icon(Icons.delete_forever_outlined),
                             Text("Delete"),
                           ],
@@ -212,7 +220,7 @@ class _AccountViewState extends State<AccountView> {
                 readOnly: true,
                 child: Column(
                   children: <Widget>[
-                    Align(
+                    const Align(
                       alignment: Alignment.centerLeft,
                       child: Text("Name"),
                     ),
@@ -221,20 +229,15 @@ class _AccountViewState extends State<AccountView> {
                       enabled: editing,
                       keyboardType: TextInputType.text,
                       textInputAction: TextInputAction.next,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         hintText: "Example",
                       ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return "Name is required";
-                        }
-                        return null;
-                      },
+                      validator: fieldValidator,
                     ),
                   ],
                 ),
               ),
-              Flexible(
+              const Flexible(
                 child: FractionallySizedBox(
                   heightFactor: .1,
                 ),
@@ -244,7 +247,7 @@ class _AccountViewState extends State<AccountView> {
                 readOnly: true,
                 child: Column(
                   children: <Widget>[
-                    Align(
+                    const Align(
                       alignment: Alignment.centerLeft,
                       child: Text("Address"),
                     ),
@@ -255,15 +258,10 @@ class _AccountViewState extends State<AccountView> {
                           enabled: editing,
                           keyboardType: TextInputType.url,
                           textInputAction: TextInputAction.next,
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             hintText: "https://www.example.com",
                           ),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return "Address is required";
-                            }
-                            return null;
-                          },
+                          validator: fieldValidator,
                         ),
                         if (!editing)
                           Semantics(
@@ -275,7 +273,7 @@ class _AccountViewState extends State<AccountView> {
                               alignment: Alignment.centerRight,
                               child: IconButton(
                                 tooltip: "Open URL",
-                                icon: Icon(Icons.open_in_new),
+                                icon: const Icon(Icons.open_in_new),
                                 onPressed: () {},
                               ),
                             ),
@@ -285,7 +283,7 @@ class _AccountViewState extends State<AccountView> {
                   ],
                 ),
               ),
-              Flexible(
+              const Flexible(
                 child: FractionallySizedBox(
                   heightFactor: .1,
                 ),
@@ -295,7 +293,7 @@ class _AccountViewState extends State<AccountView> {
                 readOnly: true,
                 child: Column(
                   children: <Widget>[
-                    Align(
+                    const Align(
                       alignment: Alignment.centerLeft,
                       child: Text("Username"),
                     ),
@@ -306,9 +304,10 @@ class _AccountViewState extends State<AccountView> {
                           enabled: editing,
                           keyboardType: TextInputType.emailAddress,
                           textInputAction: TextInputAction.next,
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             hintText: "account@email.com",
                           ),
+                          validator: fieldValidator,
                         ),
                         if (!editing)
                           Align(
@@ -318,7 +317,7 @@ class _AccountViewState extends State<AccountView> {
                               hint: "Tap to copy username",
                               label: "Copy username button",
                               child: IconButton(
-                                icon: Icon(Icons.copy),
+                                icon: const Icon(Icons.copy),
                                 tooltip: "Copy username",
                                 onPressed: () {
                                   copyNotify(textUsername, "username");
@@ -331,7 +330,7 @@ class _AccountViewState extends State<AccountView> {
                   ],
                 ),
               ),
-              Flexible(
+              const Flexible(
                 child: FractionallySizedBox(
                   heightFactor: .1,
                 ),
@@ -341,7 +340,7 @@ class _AccountViewState extends State<AccountView> {
                 readOnly: true,
                 child: Column(
                   children: <Widget>[
-                    Align(
+                    const Align(
                       alignment: Alignment.centerLeft,
                       child: Text("Password"),
                     ),
@@ -355,12 +354,7 @@ class _AccountViewState extends State<AccountView> {
                             obscureText: obscured,
                             keyboardType: TextInputType.visiblePassword,
                             textInputAction: TextInputAction.done,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return "Password is required";
-                              }
-                              return null;
-                            },
+                            validator: fieldValidator,
                           ),
                         ),
                         Row(
@@ -374,8 +368,8 @@ class _AccountViewState extends State<AccountView> {
                               label: "Obscure password button",
                               child: IconButton(
                                 icon: obscured
-                                    ? Icon(Icons.visibility_outlined)
-                                    : Icon(Icons.visibility_off_outlined),
+                                    ? const Icon(Icons.visibility_outlined)
+                                    : const Icon(Icons.visibility_off_outlined),
                                 tooltip: obscured
                                     ? "Show password"
                                     : "Hide password",
@@ -393,7 +387,7 @@ class _AccountViewState extends State<AccountView> {
                                 label: "Copy password button",
                                 child: IconButton(
                                   tooltip: "Copy password",
-                                  icon: Icon(Icons.copy),
+                                  icon: const Icon(Icons.copy),
                                   onPressed: () {
                                     copyNotify(textPassword, "password");
                                   },
@@ -406,7 +400,7 @@ class _AccountViewState extends State<AccountView> {
                   ],
                 ),
               ),
-              Flexible(
+              const Flexible(
                 child: FractionallySizedBox(
                   heightFactor: .1,
                 ),
@@ -417,7 +411,7 @@ class _AccountViewState extends State<AccountView> {
                   readOnly: true,
                   child: Column(
                     children: <Widget>[
-                      Align(
+                      const Align(
                         alignment: Alignment.centerLeft,
                         child: Text("Timestamp"),
                       ),

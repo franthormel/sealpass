@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 import '../manager/padding.dart';
 import '../models/account.dart';
@@ -21,6 +20,16 @@ class _AccountAddState extends State<AccountAdd> {
   bool maskPassword = true;
 
   bool get accountFormIsValid => keyForm.currentState!.validate();
+
+  String? fieldValidator(String? input) {
+    String? value;
+
+    if (input == null || input.isEmpty) {
+      value = "This field is required";
+    }
+
+    return value;
+  }
 
   /// Returns an [Account] to the previous route if [Form] is valid
   void popValidForm() {
@@ -49,14 +58,14 @@ class _AccountAddState extends State<AccountAdd> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: Text("Add an account"),
+        title: const Text("Add an account"),
         actions: <Widget>[
           Semantics(
             button: true,
             hint: "Tap to add account",
             label: "Add account button",
             child: IconButton(
-              icon: Icon(Icons.check),
+              icon: const Icon(Icons.check),
               tooltip: "Add",
               onPressed: popValidForm,
             ),
@@ -72,7 +81,7 @@ class _AccountAddState extends State<AccountAdd> {
               //Name
               Column(
                 children: <Widget>[
-                  Align(
+                  const Align(
                     alignment: Alignment.centerLeft,
                     child: Text("Name"),
                   ),
@@ -87,20 +96,15 @@ class _AccountAddState extends State<AccountAdd> {
                       controller: textName,
                       keyboardType: TextInputType.text,
                       textInputAction: TextInputAction.next,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         hintText: "Example",
                       ),
-                      validator: (value) { // TODO Refactor using a function and others too
-                        if (value == null || value.isEmpty) {
-                          return "Name is required";
-                        }
-                        return null;
-                      },
+                      validator: fieldValidator,
                     ),
                   ),
                 ],
               ),
-              Flexible(
+              const Flexible(
                 child: FractionallySizedBox(
                   heightFactor: .1,
                 ),
@@ -108,7 +112,7 @@ class _AccountAddState extends State<AccountAdd> {
               //Address
               Column(
                 children: <Widget>[
-                  Align(
+                  const Align(
                     alignment: Alignment.centerLeft,
                     child: Text("Address"),
                   ),
@@ -122,20 +126,15 @@ class _AccountAddState extends State<AccountAdd> {
                       controller: textAddress,
                       keyboardType: TextInputType.url,
                       textInputAction: TextInputAction.next,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         hintText: "https://www.example.com",
                       ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return "Address is required";
-                        }
-                        return null;
-                      },
+                      validator: fieldValidator,
                     ),
                   ),
                 ],
               ),
-              Flexible(
+              const Flexible(
                 child: FractionallySizedBox(
                   heightFactor: .1,
                 ),
@@ -143,7 +142,7 @@ class _AccountAddState extends State<AccountAdd> {
               //Username
               Column(
                 children: <Widget>[
-                  Align(
+                  const Align(
                     alignment: Alignment.centerLeft,
                     child: Text("Username"),
                   ),
@@ -157,14 +156,15 @@ class _AccountAddState extends State<AccountAdd> {
                       controller: textUsername,
                       keyboardType: TextInputType.emailAddress,
                       textInputAction: TextInputAction.next,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         hintText: "account@email.com",
                       ),
+                      validator: fieldValidator,
                     ),
                   ),
                 ],
               ),
-              Flexible(
+              const Flexible(
                 child: FractionallySizedBox(
                   heightFactor: .1,
                 ),
@@ -172,7 +172,7 @@ class _AccountAddState extends State<AccountAdd> {
               //Password
               Column(
                 children: <Widget>[
-                  Align(
+                  const Align(
                     alignment: Alignment.centerLeft,
                     child: Text("Password"),
                   ),
@@ -189,15 +189,7 @@ class _AccountAddState extends State<AccountAdd> {
                           obscureText: maskPassword,
                           keyboardType: TextInputType.visiblePassword,
                           textInputAction: TextInputAction.done,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return "Password is required";
-                            }
-                            return null;
-                          },
-                          onFieldSubmitted: (_) {
-                            popValidForm();
-                          },
+                          validator: fieldValidator,
                         ),
                       ),
                       Align(
@@ -210,8 +202,8 @@ class _AccountAddState extends State<AccountAdd> {
                           label: "Obscure password button",
                           child: IconButton(
                             icon: maskPassword
-                                ? Icon(Icons.visibility_outlined)
-                                : Icon(Icons.visibility_off_outlined),
+                                ? const Icon(Icons.visibility_outlined)
+                                : const Icon(Icons.visibility_off_outlined),
                             tooltip: maskPassword
                                 ? "Show password"
                                 : "Hide password",
